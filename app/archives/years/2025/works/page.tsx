@@ -59,7 +59,7 @@ export default async function WorksPage() {
   return (
     <div className="min-h-screen bg-white">
       <div className="container mx-auto py-16 px-6">
-        <header className="mb-12">
+        <header className="mb-16">
           <h1 className="text-4xl font-bold mb-6">작품 갤러리</h1>
           <p className="text-gray-600 max-w-3xl">
             2025년 졸업 전시 작품들을 모아 놓은 갤러리입니다. 원하는 작품을 클릭하여 자세한 정보를 확인하세요.
@@ -67,7 +67,7 @@ export default async function WorksPage() {
         </header>
 
         {/* 검색 및 필터링 */}
-        <div className="bg-gray-50 p-6 rounded-lg mb-12">
+        <div className="bg-gray-50 p-6 rounded-lg mb-16">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
               <input 
