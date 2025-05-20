@@ -76,12 +76,6 @@ export default async function WorksPage() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
               />
             </div>
-            <select className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500">
-              <option value="">모든 카테고리</option>
-              {categories.map(category => (
-                <option key={category} value={category}>{category}</option>
-              ))}
-            </select>
             <button className="px-6 py-2 bg-primary-800 text-white rounded-lg hover:bg-primary-700">
               검색
             </button>
