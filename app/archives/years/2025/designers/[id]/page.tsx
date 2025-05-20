@@ -18,9 +18,17 @@ export default async function DesignerDetailPage({ params }: DesignerDetailPageP
   // 현재는 더미 데이터 사용
   const designer = {
     id: designerId,
-    name: ['홍길동', '김철수', '이영희', '박민수', '정지원', '최유진', '윤지수', '서현우'][designerId % 8],
-    major: '커뮤니케이션디자인',
-    profile_image: `/images/profiles/user-${designerId % 8 + 1}.jpg`,
+    // 디자이너 ID에 따라 이름 할당
+    name: designerId === 101 ? '홍길동' : 
+          designerId === 102 ? '김철수' : 
+          designerId === 103 ? '이영희' : 
+          designerId === 104 ? '박민수' : 
+          designerId === 105 ? '정지원' : 
+          designerId === 106 ? '최유진' : 
+          designerId === 107 ? '윤지수' : 
+          designerId === 108 ? '서현우' : '알 수 없음',
+    major: '커뮤니케이션디자인과',
+    profile_image: `/images/profiles/user-${designerId - 100}.jpg`,
     bio: '디자인을 통해 새로운 가치를 창출하고자 합니다. 시각 디자인을 중심으로 다양한 미디어와 플랫폼에서 사용자 경험을 향상시키는 작업을 진행해왔습니다.',
     email: `designer${designerId}@example.com`,
     instagram: `designer${designerId}`,
@@ -28,16 +36,17 @@ export default async function DesignerDetailPage({ params }: DesignerDetailPageP
     interview2: '작업 과정에서 가장 어려웠던 점은 콘셉트를 명확히 정의하고 그것을 시각적으로 표현하는 과정이었습니다. 여러 번의 피드백과 수정을 거쳐 최종 결과물을 만들어내는 과정이 기억에 남습니다.',
     works: [
       {
-        id: designerId * 10 + 1,
-        title: `작품 제목 ${designerId * 10 + 1}`,
-        images: [`/images/works/thumbnail-${designerId % 8 + 1}.jpg`],
-        category: '커뮤니케이션디자인',
+        id: designerId - 100,
+        title: `작품 제목 ${designerId - 100}`,
+        images: [`/images/works/thumbnail-${designerId - 100}.jpg`],
+        category: (designerId - 100) % 2 === 0 ? '융합디자인스튜디오' : '혁신디자인스튜디오',
       },
       {
-        id: designerId * 10 + 2,
-        title: `작품 제목 ${designerId * 10 + 2}`,
-        images: [`/images/works/thumbnail-${(designerId + 1) % 8 + 1}.jpg`],
-        category: '커뮤니케이션디자인',
+        // 두 번째 작품은 사용자마다 다른 작품을 보여줌
+        id: ((designerId - 100) % 6) + 1, // 1~6 사이의 숫자 중 하나
+        title: `작품 제목 ${((designerId - 100) % 6) + 1}`,
+        images: [`/images/works/thumbnail-${((designerId - 100) % 6) + 1}.jpg`],
+        category: (((designerId - 100) % 6) + 1) % 2 === 0 ? '융합디자인스튜디오' : '혁신디자인스튜디오',
       }
     ]
   }
@@ -70,12 +79,12 @@ export default async function DesignerDetailPage({ params }: DesignerDetailPageP
               <span>{designer.name}</span>
             </div>
 
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-              <div className="w-40 h-40 md:w-48 md:h-48 bg-gray-200 rounded-full shrink-0 flex items-center justify-center mb-4 md:mb-0">
+            <div className="flex flex-col md:flex-row items-start gap-8">
+              <div className="w-40 h-40 md:w-48 md:h-48 bg-gray-200 rounded-full shrink-0 flex items-center justify-center">
                 {/* 프로필 이미지가 있을 경우 표시 */}
                 {designer.profile_image && <Image src={designer.profile_image} alt={`${designer.name} 프로필`} width={192} height={192} className="rounded-full" />}
               </div>
-              <div className="flex-1 max-w-2xl text-center md:text-left">
+              <div className="flex-1 max-w-2xl text-left">
                 <h1 className="text-4xl font-bold mb-2">{designer.name}</h1>
                 <p className="text-xl text-gray-600 mb-4">{designer.major}</p>
                 <div className="flex flex-wrap gap-4 mb-6">
@@ -147,6 +156,7 @@ export default async function DesignerDetailPage({ params }: DesignerDetailPageP
                     </div>
                     <div className="p-6">
                       <h3 className="text-xl font-medium mb-2 group-hover:text-primary-700">{work.title}</h3>
+                      <p className="text-sm text-gray-500">{work.category}</p>
                     </div>
                   </div>
                 </Link>

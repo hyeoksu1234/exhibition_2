@@ -26,12 +26,19 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
       '/images/works/detail-3.jpg'
     ],
     category: workId % 2 === 0 ? '융합디자인스튜디오' : '혁신디자인스튜디오',
+    professor: workId % 2 === 0 ? '김성민 교수' : '이지현 교수',
     tags: ['그래픽디자인', '타이포그래피', '브랜딩'],
     users: {
       id: 100 + workId,
-      name: ['홍길동', '김철수', '이영희', '박민수', '정지원', '최유진'][workId % 6],
+      name: workId === 1 ? '홍길동' : 
+            workId === 2 ? '김철수' : 
+            workId === 3 ? '이영희' : 
+            workId === 4 ? '박민수' : 
+            workId === 5 ? '정지원' : 
+            workId === 6 ? '최유진' : 
+            '알 수 없음',
       profile_image: '/images/profiles/user-' + workId + '.jpg',
-      major: workId % 2 === 0 ? '융합디자인스튜디오' : '혁신디자인스튜디오',
+      major: '커뮤니케이션디자인과',
     }
   }
 
@@ -54,7 +61,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
       {/* 작품 헤더 */}
       <div className="bg-gray-50 py-16">
         <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto">
             <div className="flex items-center space-x-2 text-sm text-gray-500 mb-6">
               <Link href="/archives/years/2025" className="hover:text-primary-700">홈</Link>
               <span>/</span>
@@ -63,9 +70,14 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
               <span>{work.title}</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4">{work.title}</h1>
+            <div className="flex flex-wrap items-center gap-3 mb-6">
+              <span className="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded-full">
+                {work.category}
+              </span>
+              <span className="text-gray-600">| 지도교수: {work.professor}</span>
+            </div>
             <div className="flex items-center mt-6">
-              <div className="w-12 h-12 bg-gray-200 rounded-full mr-4"></div>
-              <div>
+              <div className="text-left">
                 <Link href={`/archives/years/2025/designers/${work.users.id}`} className="font-medium text-lg hover:text-primary-700">
                   {work.users.name}
                 </Link>
@@ -116,6 +128,11 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
                 </div>
 
                 <div className="border-t pt-4 mt-4">
+                  <h4 className="text-sm font-medium text-gray-500 mb-2">지도교수</h4>
+                  <p className="mb-4">{work.professor}</p>
+                </div>
+
+                <div className="border-t pt-4 mt-4">
                   <h4 className="text-sm font-medium text-gray-500 mb-2">태그</h4>
                   <div className="flex flex-wrap gap-2">
                     {work.tags.map((tag, index) => (
@@ -132,8 +149,7 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
                     href={`/archives/years/2025/designers/${work.users.id}`} 
                     className="flex items-center hover:bg-gray-100 p-2 rounded-lg"
                   >
-                    <div className="w-10 h-10 bg-gray-200 rounded-full mr-3"></div>
-                    <div>
+                    <div className="text-left">
                       <p className="font-medium">{work.users.name}</p>
                       <p className="text-sm text-gray-500">{work.users.major}</p>
                     </div>
@@ -171,21 +187,38 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
         <div className="container mx-auto px-6">
           <h2 className="text-2xl font-bold mb-12 text-center">다른 작품 둘러보기</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {[1, 2, 3].map((id) => (
-              <Link key={id} href={`/archives/years/2025/works/${(workId + id) % 6 + 1}`} className="group">
-                <div className="bg-white rounded-lg overflow-hidden shadow-sm">
-                  <div className="aspect-square bg-gray-200 flex items-center justify-center text-gray-400 group-hover:text-gray-600">
-                    작품 이미지
+            {[1, 2, 3].map((id) => {
+              // 1부터 6까지 순환하도록 설정
+              const nextWorkId = (workId + id) % 6 || 6; // 0이 되면 6으로 처리
+              let designerName;
+              
+              // 작품 ID에 따라 디자이너 이름 할당
+              switch(nextWorkId) {
+                case 1: designerName = '홍길동'; break;
+                case 2: designerName = '김철수'; break;
+                case 3: designerName = '이영희'; break;
+                case 4: designerName = '박민수'; break;
+                case 5: designerName = '정지원'; break;
+                case 6: designerName = '최유진'; break;
+                default: designerName = '알 수 없음';
+              }
+              
+              return (
+                <Link key={id} href={`/archives/years/2025/works/${nextWorkId}`} className="group">
+                  <div className="bg-white rounded-lg overflow-hidden shadow-sm">
+                    <div className="aspect-square bg-gray-200 flex items-center justify-center text-gray-400 group-hover:text-gray-600">
+                      작품 이미지
+                    </div>
+                    <div className="p-4">
+                      <h3 className="font-medium group-hover:text-primary-700">작품 제목 {nextWorkId}</h3>
+                      <p className="text-gray-500 text-sm">
+                        {designerName}
+                      </p>
+                    </div>
                   </div>
-                  <div className="p-4">
-                    <h3 className="font-medium group-hover:text-primary-700">작품 제목 {(workId + id) % 6 + 1}</h3>
-                    <p className="text-gray-500 text-sm">
-                      {['홍길동', '김철수', '이영희', '박민수', '정지원', '최유진'][(workId + id) % 6]}
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
           <div className="text-center mt-12">
             <Link href="/archives/years/2025/works" className="px-6 py-3 bg-primary-800 text-white rounded-lg hover:bg-primary-700 inline-block">
