@@ -214,20 +214,20 @@ export default async function Exhibition2025Home() {
           <h2 className="text-3xl font-bold mb-16 text-center">지도교수</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-              <h3 className="text-xl font-medium mb-8 pb-4 border-b">융합디자인스튜디오</h3>
+              <h3 className="text-xl font-medium mb-8 pb-4 border-b text-center">융합디자인스튜디오</h3>
               <div className="grid grid-cols-2 gap-6">
                 {['이원제', '신윤진', '남정', '유동관'].map((name, index) => (
-                  <div key={index} className="py-2">
+                  <div key={index} className="py-2 text-center">
                     <span>{name} 교수</span>
                   </div>
                 ))}
               </div>
             </div>
             <div>
-              <h3 className="text-xl font-medium mb-8 pb-4 border-b">혁신디자인스튜디오</h3>
+              <h3 className="text-xl font-medium mb-8 pb-4 border-b text-center">혁신디자인스튜디오</h3>
               <div className="grid grid-cols-2 gap-6">
                 {['손우성', '김한솔', '안혜선', '서승연'].map((name, index) => (
-                  <div key={index} className="py-2">
+                  <div key={index} className="py-2 text-center">
                     <span>{name} 교수</span>
                   </div>
                 ))}
