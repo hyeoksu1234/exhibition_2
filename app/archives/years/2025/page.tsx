@@ -52,7 +52,7 @@ export default async function Exhibition2025Home() {
               <div>
                 <h3 className="text-lg font-medium text-gray-500 mb-2">위치</h3>
                 <p className="text-xl">
-                  더 라이티움 성수 제 1 전시장
+                더 서울 라이티움 제 1전시장
                 </p>
               </div>
               <div>
