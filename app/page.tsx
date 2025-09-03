@@ -3,16 +3,16 @@ import Image from 'next/image'
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#FAFAFA] text-gray-900">
+    <main className="min-h-screen bg-[#FAFAFA] text-gray-900 pretendard-font">
       {/* 헤더 섹션 */}
       <div className="border-b border-gray-200">
         <div className="max-w-5xl mx-auto px-6 md:px-8 py-24 md:py-32">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-medium tracking-tight mb-8">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-8">
             <span className="block mb-4">상명대학교 커뮤니케이션디자인</span>
             졸업 전시 아카이브
           </h1>
           <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-            상명대학교 역대 온라인 졸업 전시 웹사이트 아카이브 플랫폼입니다. <br />
+            상명대학교 커뮤니케이션디자인과 역대 온라인 졸업 전시 웹사이트 아카이브 플랫폼입니다. <br />
             연도별 졸업 작품을 감상하고 디자이너의 작업 과정을 탐색해보세요.
           </p>
         </div>
@@ -25,7 +25,7 @@ export default function Home() {
           <div className="flex flex-col mb-12">
             <p className="text-sm font-mono uppercase tracking-wider text-gray-500 mb-2">Exhibitions</p>
             <div className="flex flex-col md:flex-row md:items-end justify-between">
-              <h2 className="text-2xl md:text-3xl font-serif">연도별 전시</h2>
+              <h2 className="text-2xl md:text-3xl font-semibold">연도별 전시</h2>
               <p className="text-sm text-gray-500 mt-4 md:mt-0">총 2개의 전시</p>
             </div>
           </div>
@@ -35,12 +35,12 @@ export default function Home() {
               <table className="w-full text-left">
                 <thead>
                   <tr>
-                    <th className="py-6 pr-6 font-normal text-sm text-gray-500">연도</th>
-                    <th className="py-6 pr-6 font-normal text-sm text-gray-500">전시명</th>
-                    <th className="py-6 pr-6 font-normal text-sm text-gray-500">참여 학생</th>
-                    <th className="py-6 pr-6 font-normal text-sm text-gray-500">작품 수</th>
-                    <th className="py-6 pr-6 font-normal text-sm text-gray-500">전시 기간</th>
-                    <th className="py-6 font-normal text-sm text-gray-500"></th>
+                    <th className="py-6 pr-6 font-medium text-sm text-gray-500">연도</th>
+                    <th className="py-6 pr-6 font-medium text-sm text-gray-500">전시명</th>
+                    <th className="py-6 pr-6 font-medium text-sm text-gray-500">참여 학생</th>
+                    <th className="py-6 pr-6 font-medium text-sm text-gray-500">작품 수</th>
+                    <th className="py-6 pr-6 font-medium text-sm text-gray-500">전시 기간</th>
+                    <th className="py-6 font-medium text-sm text-gray-500"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -81,12 +81,10 @@ export default function Home() {
           </div>
         </div>
 
-        
-          
         {/* 아카이브 소개 */}
         <div className="mb-24">
           <p className="text-sm font-mono uppercase tracking-wider text-gray-500 mb-2">About</p>
-          <h2 className="text-2xl md:text-3xl font-serif mb-8">아카이브 소개</h2>
+          <h2 className="text-2xl md:text-3xl font-semibold mb-8">아카이브 소개</h2>
           
           <div className="prose prose-lg text-gray-600 max-w-none">
             <p>

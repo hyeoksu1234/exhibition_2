@@ -2,6 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 폰트 설정 */
+/* Adobe Fonts (Typekit)를 통해 RixDongnimGothic Pro 폰트 로드 */
+/* 로컬 폰트 파일은 Adobe Fonts 로드 실패 시 폴백으로 사용 */
+@font-face {
+  font-family: "rixdongnimgothic-pro";
+  src: url('/fonts/rixdongnimgothic-pro.woff2') format('woff2'),
+       url('/fonts/rixdongnimgothic-pro.woff') format('woff'),
+       url('/fonts/rixdongnimgothic-pro.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap; /* 폰트 로딩 성능 개선 */
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url('/fonts/Pretendard-Light.woff2') format('woff2'),
+       url('/fonts/Pretendard-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url('/fonts/Pretendard-Regular.woff2') format('woff2'),
+       url('/fonts/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url('/fonts/Pretendard-Medium.woff2') format('woff2'),
+       url('/fonts/Pretendard-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url('/fonts/Pretendard-SemiBold.woff2') format('woff2'),
+       url('/fonts/Pretendard-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Pretendard";
+  src: url('/fonts/Pretendard-Bold.woff2') format('woff2'),
+       url('/fonts/Pretendard-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -13,13 +71,36 @@
     --ring: 221.2 83.2% 53.3%;
   }
 
+  * {
+    font-family: "rixdongnimgothic-pro", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  html, body {
+    overflow-x: hidden;
+  }
+
   body {
     @apply bg-white text-primary-900 antialiased;
+    font-family: "rixdongnimgothic-pro", sans-serif;
   }
 }
 
 @layer components {
   .container {
     @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+  
+  .footer-archive-link:hover {
+    opacity: 0.8;
+  }
+  
+  .pretendard-font {
+    font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
+  }
+  
+  .pretendard-font * {
+    font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
   }
 } 
