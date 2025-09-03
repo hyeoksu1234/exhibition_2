@@ -33,29 +33,20 @@
 - `/public/svg/yoon.svg` - Yoondesign 로고
 - `/public/svg/ads.svg` - 무주 ADSLAND 로고
 
-## 3. 디자이너 프로필 이미지
-- `/public/images/profiles/user-1.jpg` - 홍길동
-- `/public/images/profiles/user-2.jpg` - 김철수
-- `/public/images/profiles/user-3.jpg` - 이영희
-- `/public/images/profiles/user-4.jpg` - 박민수
-- `/public/images/profiles/user-5.jpg` - 정지원
-- `/public/images/profiles/user-6.jpg` - 최유진
-- `/public/images/profiles/user-7.jpg` - 윤지수
-- `/public/images/profiles/user-8.jpg` - 서현우
+## 3. 디자이너 프로필 이미지 (104명)
+- `/public/images/profiles/user-1.jpg` ~ `/public/images/profiles/user-104.jpg`
+  - 각 파일은 실제 학생 순서대로 매핑됨 (student-data.ts 파일 참조)
+  - 정사각형 비율 권장 (최소 300x300px)
 
 ## 4. 작품 이미지
-### 썸네일 이미지
-- `/public/images/works/thumbnail-1.jpg` - 작품 1 썸네일
-- `/public/images/works/thumbnail-2.jpg` - 작품 2 썸네일
-- `/public/images/works/thumbnail-3.jpg` - 작품 3 썸네일
-- `/public/images/works/thumbnail-4.jpg` - 작품 4 썸네일
-- `/public/images/works/thumbnail-5.jpg` - 작품 5 썸네일
-- `/public/images/works/thumbnail-6.jpg` - 작품 6 썸네일
-
-### 작품 상세 이미지
-- `/public/images/works/detail-1.jpg` - 작품 상세 이미지 1
-- `/public/images/works/detail-2.jpg` - 작품 상세 이미지 2
-- `/public/images/works/detail-3.jpg` - 작품 상세 이미지 3
+### 작품별 이미지 구조
+- 각 작품은 고유한 ID를 가지며, 다음과 같은 이미지 파일이 필요합니다:
+  - `/public/images/works/work-{id}-thumb.jpg` - 작품 썸네일
+  - `/public/images/works/work-{id}-1.jpg` ~ `/public/images/works/work-{id}-6.jpg` - 작품 상세 이미지 (3-6장)
+  
+### 예상 작품 수
+- 104명의 학생 × 평균 1-3개 작품 = 약 200-300개의 작품
+- 각 작품당 4-7개의 이미지 필요 (썸네일 1개 + 상세 3-6개)
 
 ## 5. 전시장 아카이브 이미지
 - `/public/images/archive/image-1.jpg` - 전시장 이미지 1

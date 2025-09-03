@@ -30,7 +30,7 @@ export const professors: Professor[] = [
   { id: 8, name: '남정', studio: '융합디자인스튜디오' }
 ];
 
-// 졸업전시위원회 정보
+// 졸업전시위원회 정보 (실제 학생 데이터 기반)
 export const committee = {
   chairman: { name: '명규민', role: '위원장' },
   viceChairmen: [
