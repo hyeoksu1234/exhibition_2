@@ -33,8 +33,8 @@
 - `/public/svg/yoon.svg` - Yoondesign 로고
 - `/public/svg/ads.svg` - 무주 ADSLAND 로고
 
-## 3. 디자이너 프로필 이미지 (104명)
-- `/public/images/profiles/user-1.jpg` ~ `/public/images/profiles/user-104.jpg`
+## 3. 디자이너 프로필 이미지 (92명)
+- `/public/images/profiles/user-1.jpg` ~ `/public/images/profiles/user-92.jpg`
   - 각 파일은 실제 학생 순서대로 매핑됨 (student-data.ts 파일 참조)
   - 정사각형 비율 권장 (최소 300x300px)
 
@@ -45,7 +45,7 @@
   - `/public/images/works/work-{id}-1.jpg` ~ `/public/images/works/work-{id}-6.jpg` - 작품 상세 이미지 (3-6장)
   
 ### 예상 작품 수
-- 104명의 학생 × 평균 1-3개 작품 = 약 200-300개의 작품
+- 92명의 학생 × 평균 1-3개 작품 = 약 150-280개의 작품
 - 각 작품당 4-7개의 이미지 필요 (썸네일 1개 + 상세 3-6개)
 
 ## 5. 전시장 아카이브 이미지

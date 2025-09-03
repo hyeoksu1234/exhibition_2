@@ -47,7 +47,7 @@ export default function Home() {
                   <tr className="group cursor-pointer">
                     <td className="py-6 pr-6 border-t border-gray-100">2025</td>
                     <td className="py-6 pr-6 border-t border-gray-100 font-medium">2025 졸업 전시</td>
-                    <td className="py-6 pr-6 border-t border-gray-100">104명</td>
+                    <td className="py-6 pr-6 border-t border-gray-100">92명</td>
                     <td className="py-6 pr-6 border-t border-gray-100">200+개</td>
                     <td className="py-6 pr-6 border-t border-gray-100">2025. 11. 13 (목) - 2025. 11. 19 (수)</td>
                     <td className="py-6 border-t border-gray-100 text-right">
