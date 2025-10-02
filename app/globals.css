@@ -103,4 +103,365 @@
   .pretendard-font * {
     font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
   }
-} 
+
+  /* Force Rix font where needed, and ensure normal weight */
+  .rix-font, .rix-font * {
+    font-family: "rixdongnimgothic-pro", sans-serif !important;
+    font-weight: 400 !important;
+  }
+
+  /* Hero image swap: default on, 360 image off by default */
+  .hero-360 { display: none; }
+  .hero-default { display: block; }
+  /* Map image swap default */
+  .map-360 { display: none; }
+  .map-default { display: block; }
+
+  /* Desktop/All: add top margin above sponsor logos (grid container) */
+  .sponsors-section .grid { margin-top: 28px; }
+
+  /* Sponsors tag font size set in mobile breakpoint below */
+
+  /* 440px breakpoint overrides */
+  @media (max-width: 440px) {
+    /* ---------------------------------------------- */
+    /* Home (archive-home) mobile adjustments (match works page scale) */
+    /* ---------------------------------------------- */
+    .archive-home .home-header-container,
+    .archive-home .home-body-container,
+    .archive-home .home-footer-container {
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+    }
+    .archive-home .home-header-container {
+      padding-top: 32px !important;
+      padding-bottom: 32px !important;
+    }
+    .archive-home .home-body-container {
+      padding-top: 24px !important;
+      padding-bottom: 24px !important;
+    }
+    .archive-home .home-title {
+      font-size: 26px !important;
+      line-height: 1.35 !important;
+      margin: 0 0 12px 0 !important;
+    }
+    .archive-home .home-lead,
+    .archive-home .home-about-prose {
+      font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
+      font-size: 16px !important;
+      color: #6F6F6F !important;
+    }
+    /* Tweak exhibitions table spacing and size on mobile */
+    .archive-home table th,
+    .archive-home table td {
+      padding-top: 10px !important;
+      padding-bottom: 10px !important;
+      padding-right: 12px !important;
+      font-size: 14px !important;
+      white-space: nowrap;
+    }
+    .archive-home thead th:last-child,
+    .archive-home tbody td:last-child {
+      padding-right: 0 !important;
+    }
+    .archive-home .home-about-section { margin-bottom: 40px !important; }
+
+    /* Footer: title underline divider below the 3-line title */
+    .footer-title-divider { display: none !important; }
+    /* Footer: auto height on mobile (grid layout) */
+    .footer-root { height: auto !important; padding-bottom: 24px !important; }
+    /* Main title font downscale on small screens */
+    .main-title {
+      font-size: 26px !important;
+      line-height: 1.35 !important;
+      margin: 0 0 7px 0 !important; /* remove other margins, keep 7px bottom */
+    }
+    /* Subtitle downscale + spacing */
+    .subtitle-text { font-size: 16px !important; margin-bottom: 28px !important; }
+    /* Spacing between hero and next section label */
+    .hero-section { margin-bottom: 40px !important; }
+    /* Body copy styling */
+    .body-copy {
+      font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
+      font-size: 16px !important;
+      color: #6F6F6F !important;
+    }
+    /* Remove desktop paddings/margins in page shell */
+    .page-shell {
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+    .page-shell .px-8 {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    .section-content {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      width: auto !important;
+    }
+    /* Remove 8px spacer columns in sections */
+    .section-content .w-2 { width: 0 !important; }
+    /* Hide all vertical rails on small screens */
+    .rail-vertical { display: none !important; }
+    /* Hide all horizontal rails on small screens */
+    .rail-horizontal { display: none !important; }
+    /* Remove Spacer blocks on small screens */
+    .spacer { height: 0 !important; display: none !important; }
+    /* Navigation: hide links, show hamburger */
+    /* Keep a real nav height so the hamburger lives inside it */
+    .nav-bar { height: 40px !important; min-height: 56px !important; padding-top: 0 !important; padding-bottom: 0 !important; position: relative !important; }
+    .nav-links { display: none !important; }
+    .nav-hamburger {
+      display: inline-flex !important;
+      position: absolute;
+      right: 20px;
+      top: 8px;
+      width: 40px;
+      height: 40px;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 101;
+      padding: 0;
+    }
+    .nav-hamburger .bar {
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      height: 4px;
+      background: #000;
+      transition: transform 200ms ease, opacity 200ms ease, top 200ms ease;
+    }
+    .nav-hamburger .bar.top { top: 12px; }
+    .nav-hamburger .bar.middle { top: 19px; }
+    .nav-hamburger .bar.bottom { top: 26px; }
+    .nav-hamburger.open .bar.top { top: 19px; transform: rotate(45deg); }
+    .nav-hamburger.open .bar.middle { opacity: 0; }
+    .nav-hamburger.open .bar.bottom { top: 19px; transform: rotate(-45deg); }
+
+    /* Mobile nav overlay */
+    .nav-overlay { position: fixed; inset: 0; z-index: 100; }
+    .nav-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.12); border: none; padding: 0; margin: 0; z-index: 1; }
+    .nav-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 260px;
+      max-width: 85vw;
+      background: #ffffff;
+      border-left: 1px solid #000;
+      padding: 20px;
+      box-shadow: -8px 0 16px rgba(0,0,0,0.12);
+      transform: translateX(100%);
+      transition: transform 220ms ease;
+      z-index: 2;
+    }
+    .nav-overlay.open .nav-panel { transform: translateX(0); }
+    .nav-close { position: absolute; top: 6px; right: 8px; font-size: 18px; background: none; border: none; cursor: pointer; }
+    .nav-list { list-style: none; margin: 10px 0 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+    /* Mobile nav links: non-active gray, active black */
+    .nav-list a { color: #9CA3AF; text-decoration: none; font-family: "rixdongnimgothic-pro", sans-serif; font-size: 22px; transition: color 160ms ease; }
+    .nav-list a:hover { color: #6B7280; text-decoration: none; }
+    .nav-list a.active { color: #000 !important; text-decoration: none; }
+
+    .footer-bound {
+      padding-left: 20px !important;
+      padding-right: 20px !important;
+      padding-top: 130px !important; /* reserve space for absolute title */
+    }
+    .footer-main-title {
+      left: 20px !important; /* align with details value column */
+      width: calc(100% - 120px) !important;
+      font-size: 18px !important;
+      line-height: 1.6 !important;
+    }
+    .footer-label { display: none !important; }
+    .footer-content-container {
+      position: static !important;
+      left: auto !important;
+      right: auto !important;
+      top: auto !important;
+      width: 100% !important;
+      display: grid !important;
+      grid-template-columns: 120px 1fr !important;
+      column-gap: 12px !important;
+      row-gap: 16px !important;
+      margin-top: 16px !important;
+    }
+    .footer-content-item { position: static !important; white-space: normal !important; overflow: visible !important; text-overflow: clip !important; font-size: 14px !important; }
+    .footer-mobile-label { display: block !important; color: #FBFBFB !important; font-weight: 600 !important; }
+    .footer-mobile-value { display: block !important; font-size: 14px !important; }
+    .footer-archive-link { left: 0 !important; position: static !important; display: block !important; margin-top: 16px !important; font-size: 14px !important; }
+
+    /* Force container to leave absolute flow on mobile */
+    .footer-content-container { position: static !important; left: auto !important; right: auto !important; top: auto !important; }
+
+    /* Swap hero to 360 asset */
+    .hero-default { display: none !important; }
+    .hero-360 { display: block !important; }
+    /* Swap map to 360 asset */
+    .map-default { display: none !important; }
+    .map-360 { display: block !important; }
+
+    /* Hero box: rely on page-shell padding only (exact 20px sides) */
+    .hero-box {
+      width: 100% !important;
+      max-width: 372px !important; /* cap width so height doesn't exceed 595px */
+      height: auto !important;
+      aspect-ratio: 372 / 595 !important; /* keeps original portrait ratio */
+      margin-left: auto !important;
+      margin-right: auto !important;
+      /* nav height(56) already creates space; keep a small 10px gap */
+      margin-top: 10px !important; /* spacing from hamburger to hero */
+    }
+    /* Hide rotated hero labels on mobile */
+    .hero-label { display: none !important; }
+
+    /* Main section map: reduce extra margins to enlarge map (use page-shell padding only) */
+    .offline-section .main-section-image {
+      width: 100% !important;
+      height: 268px !important; /* fixed height to crop consistently */
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      margin-bottom: 60px !important; /* space below map on mobile */
+    }
+    .main-section-image img {
+      width: 100% !important;
+      height: auto !important;
+      object-fit: cover !important;
+      display: block;
+    }
+
+    /* Override for offline map size on mobile */
+    .offline-section .main-section-image img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      object-position: center top !important; /* keep important content near top */
+    }
+
+    /* Put rotated section labels into content flow and remove rotation */
+    .label-outer {
+      position: static !important;
+      transform: none !important;
+      width: auto !important;
+      height: auto !important;
+    }
+    .section-label {
+      position: static !important;
+      transform: none !important;
+      left: auto !important;
+      right: auto !important;
+      top: auto !important;
+      display: block !important;
+      margin: 0 0 24px 0 !important; /* 24px gap below label to title */
+      padding: 0 !important;
+      text-align: left !important;
+      white-space: normal !important;
+    }
+    /* Only for the first section (소개): use padding on container to avoid margin-collapsing */
+    .exhibition-info_1 { padding-top: 40px !important; }
+    .exhibition-info_1 .section-label {
+      margin-top: 0 !important;
+      font-size: 16px !important; /* intro label size */
+    }
+    /* Offline section label size */
+    .offline-section .section-label { font-size: 16px !important; }
+    /* Professors section label size */
+    .professors-section .section-label { font-size: 16px !important; }
+    /* Professors section two-column layout on mobile */
+    .professors-section .grid { grid-template-columns: 1fr 1fr !important; column-gap: 24px !important; }
+    .professors-section .prof-group { flex-direction: column !important; gap: 8px !important; }
+    .professors-section .prof-list { align-items: flex-start !important; gap: 8px !important; margin-bottom: 50px !important; }
+    .professors-section .professor-name { font-size: 16px !important; color: #555555 !important; text-align: left !important; }
+    /* Offline section: rely on label's 24px bottom margin; zero top on first block */
+    .offline-section .mt-8, .offline-section .mt-6, .offline-section .mt-0 { margin-top: 0 !important; }
+
+    /* Remove rotation and set font size for tag boxes (RoleBox/ProfessorRoleBox) */
+    .tag-box {
+      transform: none !important;
+      font-size: 16px !important;
+      padding: 0 !important; /* remove inner padding on tags */
+      margin: 0 !important;  /* remove outer margins on tags */
+      min-width: 0 !important; /* override inline minWidth from desktop */
+    }
+
+    /* Committee section: label size and row layout */
+    .committee-section .section-label { font-size: 16px !important; }
+    /* Make a two‑column grid: left column lists all roles vertically, right column shows names */
+    .committee-section .flex.justify-center { display: grid !important; grid-template-columns: auto 1fr !important; column-gap: 8px !important; row-gap: 16px !important; justify-content: stretch !important; }
+    .committee-section .committee-group { display: contents !important; }
+    /* Box centered within left column; keep text centered inside */
+    .committee-section .tag-box {
+      justify-self: start !important; /* box aligns left edge of column */
+      width: auto !important;         /* size to content */
+      text-align: center !important;  /* center text inside box */
+      padding-left: 8px !important;
+      padding-right: 0 !important;    /* remove right padding/margins inside box */
+      padding-top: 2px !important;
+      padding-bottom: 2px !important;
+      box-sizing: border-box !important;
+      margin: 0 !important;           /* no external margins */
+    }
+    .committee-section .tag-box > * { margin-right: 0 !important; }
+    /* Enlarge studio name boxes horizontally on mobile */
+    .professors-section .tag-box { padding-left: 8px !important; padding-right: 8px !important; }
+    .professors-section .tag-box > * { margin-right: 0 !important; }
+    .committee-section .committee-list {
+      flex-direction: row !important;
+      flex-wrap: nowrap !important; /* keep all names on one line */
+      align-items: center !important;
+      justify-content: flex-start !important;
+      margin-left: 20px;
+      gap: 16px !important;
+      overflow: hidden !important; /* prevent second line */
+    }
+    .committee-section .committee-name { font-size: 16px !important; color: #555555 !important; white-space: nowrap !important; }
+    /* Mobile-only bottom spacing after committee section */
+    .committee-section { margin-bottom: 60px !important; }
+
+    /* Sponsors section: label size and tighter mobile layout */
+    .sponsors-section { height: auto !important; padding-top: 20px !important; padding-bottom: 20px !important; margin-bottom: 40px !important; }
+    .sponsors-section .section-label {
+      font-size: 16px !important;
+      display: block !important;
+      width: 100% !important;
+      margin-bottom: 30px !important;
+      white-space: nowrap !important; /* keep on single line */
+      clear: both !important; /* force next content to start on new line */
+    }
+    /* Break flex row; stack label then grid */
+    .sponsors-section .section-content { display: block !important; }
+    .sponsors-section .grid {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
+      gap: 16px 12px !important;
+      margin-top: 0 !important;
+      width: 100% !important;
+    }
+    .sponsors-section .sponsor-logo { width: 120px !important; height: auto !important; }
+    .sponsors-section .sponsor-desc { font-size: 14px !important; }
+    /* Ensure content aligns under the label, not vertically centered */
+    .sponsors-section .h-full.flex.items-center.justify-center {
+      align-items: flex-start !important;
+      justify-content: flex-start !important;
+    }
+  }
+
+  /* 560px and 768px polish for nav without changing design */
+  @media (max-width: 768px) and (min-width: 441px) {
+    .nav-bar { height: 68px !important; }
+    .nav-links { gap: 10px !important; }
+  }
+  @media (max-width: 560px) and (min-width: 441px) {
+    .nav-bar { height: 64px !important; }
+    .nav-links { gap: 10px !important; }
+  }
+}

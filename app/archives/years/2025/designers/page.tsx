@@ -1,138 +1,133 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Link from 'next/link'
-import Image from 'next/image'
-import { getUsersByArchiveId } from '@/app/lib/supabase'
+import { realStudentData, englishNameByStudentNumber, photoFileByStudentNumber } from '@/app/lib/data/student-data'
+import Footer from '../components/Footer'
+import { generateDesigners } from '@/app/lib/data/designers'
+
+// 한글 초성 추출
+const CHO = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'] as const
+function getInitialConsonant(str: string): string {
+  const s = str?.trim()?.[0]
+  if (!s) return ''
+  const code = s.charCodeAt(0)
+  if (code < 0xac00 || code > 0xd7a3) return s
+  const idx = Math.floor((code - 0xac00) / 588)
+  const ch = CHO[idx]
+  // 쌍자음은 기본 자음으로 매핑
+  if (ch === 'ㄲ') return 'ㄱ'
+  if (ch === 'ㄸ') return 'ㄷ'
+  if (ch === 'ㅃ') return 'ㅂ'
+  if (ch === 'ㅆ') return 'ㅅ'
+  if (ch === 'ㅉ') return 'ㅈ'
+  return ch
+}
+
+// 간단 로마자 변환 (개략적, 표시용)
+const CHO_RR = ['g','kk','n','d','tt','r','m','b','pp','s','ss','','j','jj','ch','k','t','p','h']
+const JUNG_RR = ['a','ae','ya','yae','eo','e','yeo','ye','o','wa','wae','oe','yo','u','wo','we','wi','yu','eu','ui','i']
+const JONG_RR = ['', 'k', 'k', 'ks', 'n', 'nj', 'nh', 't', 'l', 'lk', 'lm', 'lb', 'ls', 'lt', 'lp', 'lh', 'm', 'p', 'ps', 't', 't', 'ng', 't', 't', 'k', 't', 'p', 't']
+function romanizeKorean(str: string): string {
+  let out = ''
+  for (const ch of str) {
+    const code = ch.charCodeAt(0)
+    if (code < 0xac00 || code > 0xd7a3) { out += ch; continue }
+    const sidx = code - 0xac00
+    const cho = Math.floor(sidx / 588)
+    const jung = Math.floor((sidx % 588) / 28)
+    const jong = sidx % 28
+    const head = CHO_RR[cho]
+    const mid = JUNG_RR[jung]
+    const tail = JONG_RR[jong]
+    out += (head === '' ? '' : head) + mid + tail
+  }
+  // 단어 첫 글자만 대문자 (간단 표시)
+  return out.charAt(0).toUpperCase() + out.slice(1)
+}
 
 export default function DesignersPage() {
-  // 검색어 상태
-  const [searchTerm, setSearchTerm] = useState('');
-  
-  // 현재는 더미 데이터 사용
-  const users = [
-    {
-      id: 101,
-      name: '홍길동',
-      major: '커뮤니케이션디자인',
-      studio: '혁신디자인스튜디오',
-      profile_image: '/images/profiles/user-1.jpg',
-    },
-    {
-      id: 102,
-      name: '김철수',
-      major: '커뮤니케이션디자인',
-      studio: '융합디자인스튜디오',
-      profile_image: '/images/profiles/user-2.jpg',
-    },
-    {
-      id: 103,
-      name: '이영희',
-      major: '커뮤니케이션디자인',
-      studio: '혁신디자인스튜디오',
-      profile_image: '/images/profiles/user-3.jpg',
-    },
-    {
-      id: 104,
-      name: '박민수',
-      major: '커뮤니케이션디자인',
-      studio: '융합디자인스튜디오',
-      profile_image: '/images/profiles/user-4.jpg',
-    },
-    {
-      id: 105,
-      name: '정지원',
-      major: '커뮤니케이션디자인',
-      studio: '혁신디자인스튜디오',
-      profile_image: '/images/profiles/user-5.jpg',
-    },
-    {
-      id: 106,
-      name: '최유진',
-      major: '커뮤니케이션디자인',
-      studio: '융합디자인스튜디오',
-      profile_image: '/images/profiles/user-6.jpg',
-    },
-    {
-      id: 107,
-      name: '윤지수',
-      major: '커뮤니케이션디자인',
-      studio: '혁신디자인스튜디오',
-      profile_image: '/images/profiles/user-7.jpg',
-    },
-    {
-      id: 108,
-      name: '서현우',
-      major: '커뮤니케이션디자인',
-      studio: '융합디자인스튜디오',
-      profile_image: '/images/profiles/user-8.jpg',
-    },
-  ];
+  const [searchTerm, setSearchTerm] = useState('')
+  const [activeCho, setActiveCho] = useState<'ALL' | string>('ALL')
 
-  // 가나다 순으로 정렬
-  const sortedUsers = [...users].sort((a, b) => a.name.localeCompare(b.name, 'ko-KR'));
-  
-  // 검색 필터링
-  const filteredUsers = sortedUsers.filter(user => 
-    user.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const users = generateDesigners(realStudentData)
+  const sortedUsers = useMemo(() => [...users].sort((a, b) => a.name.localeCompare(b.name, 'ko-KR')), [users])
+
+  const filteredUsers = useMemo(() => {
+    return sortedUsers.filter(user => {
+      const matchSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase())
+      const initial = getInitialConsonant(user.name)
+      const matchCho = activeCho === 'ALL' ? true : initial === activeCho
+      return matchSearch && matchCho
+    })
+  }, [sortedUsers, searchTerm, activeCho])
+
+  const CHO_FILTERS = ['ALL','ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'] as const
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="container mx-auto py-16 px-6">
-        <header className="mb-16">
-          <h1 className="text-4xl font-bold mb-6">디자이너</h1>
-          <p className="text-gray-600 max-w-3xl">
-            2025년 졸업 전시에 참여한 학생들을 소개합니다. 디자이너를 클릭하여 프로필과 작품을 확인하세요.
-          </p>
-        </header>
-
-        {/* 검색 */}
-        <div className="bg-gray-50 p-6 rounded-lg mb-16">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1">
-              <input 
-                type="text" 
+      <div className="container mx-auto py-10 px-5">
+        {/* 필터 바 */}
+        <div className="flex flex-col gap-4 mb-8">
+          <div className="flex flex-wrap items-center gap-2">
+            {CHO_FILTERS.map(key => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setActiveCho(key as any)}
+                className={[
+                  'h-8 min-w-8 px-2 flex items-center justify-center border text-sm',
+                  key === 'ALL'
+                    ? (activeCho === 'ALL' ? 'bg-lime-300 border-black text-black -rotate-1 shadow-[2px_2px_0_0_#000]' : 'bg-gray-100')
+                    : (activeCho === key ? 'bg-black text-white border-black' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50')
+                ].join(' ')}
+              >
+                {key === 'ALL' ? 'All' : key}
+              </button>
+            ))}
+            <div className="ml-auto flex items-center gap-2">
+              <input
+                type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="디자이너 이름 검색" 
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+                placeholder="디자이너 이름 검색"
+                className="w-56 px-3 py-2 border-b border-gray-400 focus:outline-none focus:border-black pretendard-font"
               />
+              <button type="button" onClick={() => null} className="px-3 py-1 border border-black">
+                검색
+              </button>
             </div>
-            <button 
-              onClick={() => setSearchTerm('')}
-              className="px-6 py-2 bg-primary-800 text-white rounded-lg hover:bg-primary-700"
-            >
-              {searchTerm ? '초기화' : '검색'}
-            </button>
           </div>
         </div>
 
-        {/* 디자이너 그리드 - 가나다순 */}
-        <div>
-          <h2 className="text-2xl font-bold mb-8 pb-4 border-b">디자이너 목록</h2>
-          {filteredUsers.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-              {filteredUsers.map(designer => (
-                <Link 
-                  key={designer.id} 
-                  href={`/archives/years/2025/designers/${designer.id}`}
-                  className="group"
-                >
-                  <div className="bg-gray-50 rounded-lg overflow-hidden p-6 transition hover:shadow-md">
-                    <div className="w-32 h-32 bg-gray-200 rounded-full mx-auto mb-6"></div>
-                    <h3 className="text-lg font-medium text-center group-hover:text-primary-700">{designer.name}</h3>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-16">
-              <p className="text-gray-500 text-lg">검색 결과가 없습니다</p>
-            </div>
-          )}
-        </div>
+        {/* 그리드 */}
+        {filteredUsers.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-[10px] gap-y-[10px] sm:gap-x-6 sm:gap-y-12">
+            {filteredUsers.map(designer => (
+              <Link key={designer.id} href={`/archives/years/2025/designers/${designer.id}`} className="block group w-full sm:w-[210px] mx-auto">
+                <div className="relative overflow-hidden border border-gray-200 w-full aspect-[210/256] sm:w-[210px] sm:h-[256px] sm:aspect-auto">
+                  <img
+                    src={`/images/profiles/images/${photoFileByStudentNumber[designer.student_number ?? ''] || designer.name + '.jpg'}`}
+                    alt={`${designer.name} 사진`}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    onError={(e) => {
+                      const t = e.currentTarget as HTMLImageElement
+                      t.src = '/images/profiles/Group 1073.png'
+                    }}
+                  />
+                </div>
+                <div className="mt-3 h-[48px] flex flex-col justify-start">
+                  <div className="pretendard-font text-black font-bold text-[20px] leading-tight">{designer.name}</div>
+                  <div className="pretendard-font text-[#3D3D3D] font-bold text-[14px] leading-snug">{englishNameByStudentNumber[designer.student_number ?? ''] || romanizeKorean(designer.name)}</div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16 text-gray-500">검색 결과가 없습니다</div>
+        )}
       </div>
+      <Footer />
     </div>
   )
-} 
+}

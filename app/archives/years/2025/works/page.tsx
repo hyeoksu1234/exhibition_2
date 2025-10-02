@@ -1,146 +1,157 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { getArchiveByYear, getWorksByArchiveId } from '@/app/lib/supabase'
+"use client";
 
-export default async function WorksPage() {
-  // 실제로는 DB에서 데이터 가져오기
-  // const archiveData = await getArchiveByYear(2025)
-  // const works = await getWorksByArchiveId(archiveData?.id || 0)
-  
-  // 현재는 더미 데이터 사용
-  const works = [
-    {
-      id: 1,
-      title: '작품 제목 1',
-      images: ['/images/works/thumbnail-1.jpg'],
-      category: '혁신디자인스튜디오',
-      users: { name: '홍길동' }
-    },
-    {
-      id: 2,
-      title: '작품 제목 2',
-      images: ['/images/works/thumbnail-2.jpg'],
-      category: '혁신디자인스튜디오',
-      users: { name: '김철수' }
-    },
-    {
-      id: 3,
-      title: '작품 제목 3',
-      images: ['/images/works/thumbnail-3.jpg'],
-      category: '융합디자인스튜디오',
-      users: { name: '이영희' }
-    },
-    {
-      id: 4,
-      title: '작품 제목 4',
-      images: ['/images/works/thumbnail-4.jpg'],
-      category: '융합디자인스튜디오',
-      users: { name: '박민수' }
-    },
-    {
-      id: 5,
-      title: '작품 제목 5',
-      images: ['/images/works/thumbnail-5.jpg'],
-      category: '혁신디자인스튜디오',
-      users: { name: '정지원' }
-    },
-    {
-      id: 6,
-      title: '작품 제목 6',
-      images: ['/images/works/thumbnail-6.jpg'],
-      category: '융합디자인스튜디오',
-      users: { name: '최유진' }
-    },
-  ];
-  
-  // 카테고리 추출
-  const categories: string[] = Array.from(new Set(works.map(work => work.category)));
+import { useMemo, useState } from "react";
+import Footer from "../components/Footer";
+
+type StudioKey = "convergence" | "innovation";
+
+const STUDIOS: Record<StudioKey, { label: string; en: string; icon: string; desc: string; professors: string[] }> = {
+  convergence: {
+    label: "융합디자인스튜디오",
+    en: "Convergence Design studio",
+    icon: "/images/works/convergence.svg",
+    desc:
+      "융합디자인스튜디오는 다양한 전공과 배경을 가진 학생들이 모여 협업하는 실험적 디자인 수업입니다. 이 수업에서는 문제 해결을 위한 창의적인 방법론과 디자인 프로세스를 학습하며, 실제 프로젝트를 통해 아이디어를 구체화합니다. 학생들은 시각디자인, 서비스 디자인, 인터페이스 기획 등 여러 분야를 융합하여 새로운 결과물을 만들어내는 과정을 경험합니다.",
+    professors: ["이원제 교수님", "유동관 교수님", "신윤진 교수님", "남정 교수님"],
+  },
+  innovation: {
+    label: "혁신디자인스튜디오",
+    en: "Innovative Design studio",
+    icon: "/images/works/inovation.svg",
+    desc:
+      "혁신디자인스튜디오 수업은 다양한 전공과 배경을 가진 학생들이 모여 협업하는 실험적 디자인 수업입니다. 이 수업에서는 문제 해결을 위한 창의적인 방법론과 디자인 프로세스를 학습하며, 실제 프로젝트를 통해 아이디어를 구체화합니다. 학생들은 시각디자인, 서비스 디자인, 인터페이스 기획 등 여러 분야를 융합하여 새로운 결과물을 만들어내는 과정을 경험합니다.",
+    professors: ["김한솔 교수님", "손우성 교수님", "서승연 교수님", "안혜선 교수님"],
+  },
+};
+
+type Work = {
+  id: number;
+  title: string;
+  student: string;
+  professor: string; // 교수 필터
+  studio: StudioKey;
+};
+
+export default function WorksPage() {
+  const [active, setActive] = useState<StudioKey>("convergence");
+  const [profFilter, setProfFilter] = useState<string>("전체");
+
+  // Placeholder works (샘플 데이터)
+  const works: Work[] = useMemo(() => {
+    const convProfs = ["이원제 교수님", "유동관 교수님", "신윤진 교수님", "남정 교수님"];
+    const inovProfs = ["김한솔 교수님", "손우성 교수님", "서승연 교수님", "안혜선 교수님"];
+    const make = (count: number, studio: StudioKey) =>
+      Array.from({ length: count }).map((_, i) => ({
+        id: i + 1 + (studio === "innovation" ? 1000 : 0),
+        title: "조건과 결과, 디지털 사고",
+        student: "김혜령",
+        professor:
+          studio === "convergence"
+            ? convProfs[i % convProfs.length]
+            : inovProfs[i % inovProfs.length],
+        studio,
+      }));
+    return [...make(12, "convergence"), ...make(12, "innovation")];
+  }, []);
+
+  const filtered = useMemo(() => {
+    const byStudio = works.filter((w) => w.studio === active);
+    if (profFilter === "전체") return byStudio;
+    return byStudio.filter((w) => w.professor === profFilter);
+  }, [works, active, profFilter]);
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="container mx-auto py-16 px-6">
-        <header className="mb-16">
-          <h1 className="text-4xl font-bold mb-6">작품 갤러리</h1>
-          <p className="text-gray-600 max-w-3xl">
-            2025년 졸업 전시 작품들을 모아 놓은 갤러리입니다. 원하는 작품을 클릭하여 자세한 정보를 확인하세요.
-          </p>
-        </header>
+      <div className="container mx-auto px-6 py-16">
+        {/* 상단 제목 및 설명 제거 요청에 따라 삭제됨 */}
 
-        {/* 검색 및 필터링 */}
-        <div className="bg-gray-50 p-6 rounded-lg mb-16">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1">
-              <input 
-                type="text" 
-                placeholder="작품 또는 디자이너 검색" 
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
-              />
-            </div>
-            <button className="px-6 py-2 bg-primary-800 text-white rounded-lg hover:bg-primary-700">
-              검색
-            </button>
-          </div>
+        {/* 상단 스튜디오 탭 (두 개) */}
+        <div className="mb-12 grid grid-cols-1 md:grid-cols-2 gap-4">
+          {Object.entries(STUDIOS).map(([key, info]) => {
+            const k = key as StudioKey;
+            const isActive = active === k;
+            return (
+              <button
+                key={k}
+                type="button"
+                onClick={() => {
+                  setActive(k);
+                  setProfFilter("전체");
+                }}
+                aria-pressed={isActive}
+                className={[
+                  "relative w-full text-center rounded-md border-2 transition-all",
+                  isActive
+                    ? "bg-lime-300 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]"
+                    : "bg-gray-100 border-gray-300 text-gray-400",
+                ].join(" ")}
+              >
+                <div className="px-5 py-4 text-center">
+                  <div>
+                    <div className={(isActive ? "text-lg text-black" : "text-lg text-gray-400") + " text-center"}>
+                      {info.label}
+                    </div>
+                    <div className={(isActive ? "text-sm text-black/80" : "text-sm text-gray-400") + " text-center"}>{info.en}</div>
+                  </div>
+                </div>
+                {/* {isActive && <div className="absolute left-5 right-5 -bottom-2 h-[12px] bg-black" />} */}
+              </button>
+            );
+          })}
         </div>
 
-        {/* 카테고리 탭 */}
-        <div className="mb-8 border-b">
-          <div className="flex flex-wrap -mb-px">
-            <button className="mr-4 py-2 px-4 border-b-2 border-primary-800 text-primary-800 font-medium">
+        {/* 스튜디오 설명 + 교수 필터 + 그리드 */}
+        <section className="mt-2">
+          <h2 className="text-3xl md:text-4xl font-normal">{STUDIOS[active].label}</h2>
+          <div className="mt-1 text-sm text-gray-700">{STUDIOS[active].en}</div>
+          <p className="pretendard-font mt-6 text-gray-700 leading-7 max-w-4xl break-keep" style={{ wordBreak: 'keep-all' }}>{STUDIOS[active].desc}</p>
+
+          {/* 교수 필터 */}
+          <div className="mt-8 flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => setProfFilter("전체")}
+              className={[
+                "px-3 py-1 rounded-md border text-sm",
+                profFilter === "전체"
+                  ? "bg-lime-300 border-black text-black shadow-[2px_2px_0_0_rgba(0,0,0,1)]"
+                  : "bg-gray-100 border-gray-200 text-gray-600 hover:bg-gray-50",
+              ].join(" ")}
+            >
               전체
             </button>
-            {categories.map(category => (
-              <button 
-                key={category} 
-                className="mr-4 py-2 px-4 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 font-medium"
+            {STUDIOS[active].professors.map((p) => (
+              <button
+                key={p}
+                type="button"
+                onClick={() => setProfFilter(p)}
+                className={[
+                  "px-3 py-1 rounded-md border text-sm",
+                  profFilter === p
+                    ? "bg-lime-300 border-black text-black shadow-[2px_2px_0_0_rgba(0,0,0,1)]"
+                    : "bg-gray-100 border-gray-200 text-gray-600 hover:bg-gray-50",
+                ].join(" ")}
               >
-                {category}
+                {p}
               </button>
             ))}
           </div>
-        </div>
 
-        {/* 작품 그리드 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-16">
-          {works.map(work => (
-            <Link 
-              key={work.id} 
-              href={`/archives/years/2025/works/${work.id}`} 
-              className="group"
-            >
-              <div className="bg-gray-100 rounded-lg overflow-hidden aspect-square mb-4">
-                {/* 실제로는 이미지가 들어갈 곳 */}
-                <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400 group-hover:bg-gray-300 transition">
-                  작품 이미지
-                </div>
+          {/* 작품 그리드 */}
+          <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {filtered.map((w) => (
+              <div key={`${w.studio}-${w.id}`} className="group">
+                <div
+                  className="aspect-[4/3] w-full rounded-md border border-gray-200 bg-[repeating-linear-gradient(45deg,#e9e9e9_0px,#e9e9e9_12px,#f6f6f6_12px,#f6f6f6_24px)]"
+                />
+                <div className="mt-3 text-[15px] text-gray-900">{w.title}</div>
+                <div className="text-sm text-gray-600">{w.student}</div>
               </div>
-              <h3 className="font-medium text-lg mb-1 group-hover:text-primary-700">{work.title}</h3>
-              <p className="text-gray-600">{work.users.name}</p>
-              <p className="text-sm text-gray-500">{work.category}</p>
-            </Link>
-          ))}
-        </div>
-
-        {/* 페이지네이션 */}
-        <div className="flex justify-center">
-          <nav className="inline-flex rounded-md shadow">
-            <a href="#" className="py-2 px-4 border border-gray-300 bg-white rounded-l-md hover:bg-gray-50">
-              이전
-            </a>
-            <a href="#" className="py-2 px-4 border-t border-b border-gray-300 bg-primary-800 text-white">
-              1
-            </a>
-            <a href="#" className="py-2 px-4 border-t border-b border-gray-300 bg-white hover:bg-gray-50">
-              2
-            </a>
-            <a href="#" className="py-2 px-4 border-t border-b border-gray-300 bg-white hover:bg-gray-50">
-              3
-            </a>
-            <a href="#" className="py-2 px-4 border border-gray-300 bg-white rounded-r-md hover:bg-gray-50">
-              다음
-            </a>
-          </nav>
-        </div>
+            ))}
+          </div>
+        </section>
       </div>
+      <Footer />
     </div>
-  )
-} 
+  );
+}

@@ -1,179 +1,53 @@
-import Link from 'next/link';
+import Link from 'next/link'
+import { FOOTER_STYLES, FOOTER_CONSTANTS } from '../constants/footer'
+import { 
+  FooterLabel, 
+  FooterMainTitle, 
+  FooterContentContainer, 
+  ColorBar 
+} from './FooterComponents'
 
 export default function Footer() {
   return (
     <>
-      {/* Footer */}
-      <footer style={{
-        width: '100%', 
-        height: '346px', 
-        position: 'relative', 
-        background: '#171717', 
-        overflow: 'hidden'
-      }}>
-        <div style={{
-          width: 'min(432px, 35vw)', 
-          left: 'max(40px, 10vw)', 
-          top: '36px', 
-          position: 'absolute', 
-          color: '#FBFBFB', 
-          fontSize: 'clamp(20px, 2.5vw, 28px)', 
-          fontFamily: 'Pretendard', 
-          fontWeight: '700', 
-          lineHeight: '1.5', 
-          wordWrap: 'break-word'
-        }}>
-          2025 상명대학교<br/>
-          커뮤니케이션디자인전공 졸업전시<br/>
-          지우고, 다시 쓰고, 반복하는
+      <footer className="footer-root pretendard-font" style={FOOTER_STYLES.container}>
+        <div className="footer-bound" style={FOOTER_STYLES.bound}>
+          {/* 메인 타이틀 */}
+          <FooterMainTitle />
+          {/* 모바일: 타이틀 하단 구분선 */}
+          <div className="footer-title-divider" />
+
+          {/* 라벨들 */}
+          <FooterLabel top="36px" left={FOOTER_CONSTANTS.POSITIONS.LABEL_LEFT}>
+            {FOOTER_CONSTANTS.LABELS.OPENING}
+          </FooterLabel>
+
+          <FooterLabel top="82px" left={FOOTER_CONSTANTS.POSITIONS.LABEL_LEFT}>
+            {FOOTER_CONSTANTS.LABELS.VENUE}
+          </FooterLabel>
+
+          <FooterLabel top="200px" left={FOOTER_CONSTANTS.POSITIONS.LABEL_LEFT}>
+            {FOOTER_CONSTANTS.LABELS.INSTAGRAM}
+          </FooterLabel>
+
+          {/* 문의전화 라벨 제거 */}
+
+          {/* 컨텐츠 컨테이너 */}
+          <FooterContentContainer />
+
+          {/* 아카이브 링크 */}
+          <Link
+            href="/"
+            className="footer-archive-link"
+            style={FOOTER_STYLES.archiveLink}
+          >
+            {FOOTER_CONSTANTS.LABELS.ARCHIVE}
+          </Link>
         </div>
-        
-        <div style={{
-          left: 'max(60vw, 600px)', 
-          top: '36px', 
-          position: 'absolute', 
-          color: '#FBFBFB', 
-          fontSize: 'clamp(16px, 1.8vw, 22px)', 
-          fontFamily: 'Pretendard', 
-          fontWeight: '500', 
-          lineHeight: '1.8', 
-          wordWrap: 'break-word'
-        }}>
-          전시오프닝
-        </div>
-        
-        <div style={{
-          left: 'max(60vw, 600px)', 
-          top: '82px', 
-          position: 'absolute', 
-          color: '#FBFBFB', 
-          fontSize: 'clamp(16px, 1.8vw, 22px)', 
-          fontFamily: 'Pretendard', 
-          fontWeight: '500', 
-          lineHeight: '1.8', 
-          wordWrap: 'break-word'
-        }}>
-          전시장 위치
-        </div>
-        
-        <div style={{
-          left: 'max(60vw, 600px)', 
-          top: '200px', 
-          position: 'absolute', 
-          color: '#FBFBFB', 
-          fontSize: 'clamp(16px, 1.8vw, 22px)', 
-          fontFamily: 'Pretendard', 
-          fontWeight: '500', 
-          lineHeight: '1.8', 
-          wordWrap: 'break-word'
-        }}>
-          인스타그램
-        </div>
-        
-        <div style={{
-          left: 'max(60vw, 600px)', 
-          top: '244px', 
-          position: 'absolute', 
-          color: '#FBFBFB', 
-          fontSize: 'clamp(16px, 1.8vw, 22px)', 
-          fontFamily: 'Pretendard', 
-          fontWeight: '500', 
-          lineHeight: '1.8', 
-          wordWrap: 'break-word'
-        }}>
-          문의전화
-        </div>
-        
-        <div style={{
-          width: 'min(500px, 35vw)', 
-          left: 'max(70vw, 750px)', 
-          top: '36px', 
-          position: 'absolute', 
-          flexDirection: 'column', 
-          justifyContent: 'flex-start', 
-          alignItems: 'flex-start', 
-          gap: '12px', 
-          display: 'inline-flex'
-        }}>
-          <div style={{
-            color: '#FBFBFB', 
-            fontSize: 'clamp(14px, 1.6vw, 22px)', 
-            fontFamily: 'Pretendard', 
-            fontWeight: '500', 
-            lineHeight: '1.6', 
-            wordWrap: 'break-word'
-          }}>
-            2025.11.14(금) – 11.18(화) 11:00 – 19:00
-          </div>
-          
-          <div style={{
-            color: '#FBFBFB', 
-            fontSize: 'clamp(14px, 1.6vw, 22px)', 
-            fontFamily: 'Pretendard', 
-            fontWeight: '500', 
-            lineHeight: '1.6', 
-            wordWrap: 'break-word'
-          }}>
-            더 서울라이티움 제1전시장 <br />서울특별시 성동구 서울숲2길 32-14 <br /> 갤러리아포레 G층(B2층)
-          </div>
-          
-          <div style={{
-            color: '#FBFBFB', 
-            fontSize: 'clamp(14px, 1.6vw, 22px)', 
-            fontFamily: 'Pretendard', 
-            fontWeight: '500', 
-            lineHeight: '1.6', 
-            wordWrap: 'break-word'
-          }}>
-            @smucd2025
-          </div>
-          
-          <div style={{
-            color: '#FBFBFB', 
-            fontSize: 'clamp(14px, 1.6vw, 22px)', 
-            fontFamily: 'Pretendard', 
-            fontWeight: '500', 
-            lineHeight: '1.6', 
-            wordWrap: 'break-word'
-          }}>
-            031-0000-0000
-          </div>
-        </div>
-        
-        <Link 
-          href="/"
-          className="footer-archive-link"
-          style={{
-            left: 'max(40px, 10vw)', 
-            top: '244px', 
-            position: 'absolute', 
-            color: '#FBFBFB', 
-            fontSize: 'clamp(16px, 1.8vw, 22px)', 
-            fontFamily: 'Pretendard', 
-            fontWeight: '500', 
-            textDecoration: 'underline', 
-            lineHeight: '1.8', 
-            wordWrap: 'break-word',
-            cursor: 'pointer',
-            transition: 'opacity 0.2s ease'
-          }}
-        >
-          졸업전시 아카이브
-        </Link>
       </footer>
       
-      {/* Color Bar */}
-      <div style={{
-        width: '100%',
-        height: '11px',
-        display: 'flex',
-        flexDirection: 'row'
-      }}>
-        <div style={{flex: '1', height: '11px', background: '#DFDFDF'}} />
-        <div style={{flex: '1', height: '11px', background: '#DDFF8E'}} />
-        <div style={{flex: '1', height: '11px', background: '#D5B27D'}} />
-        <div style={{flex: '1', height: '11px', background: '#B5EEFF'}} />
-      </div>
+      {/* 컬러바 */}
+      <ColorBar />
     </>
-  );
+  )
 }

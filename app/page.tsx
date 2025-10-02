@@ -1,25 +1,23 @@
 import Link from 'next/link'
 import Image from 'next/image'
-
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#FAFAFA] text-gray-900 pretendard-font">
+    <main className="min-h-screen bg-[#FAFAFA] text-gray-900 pretendard-font archive-home">
       {/* 헤더 섹션 */}
       <div className="border-b border-gray-200">
-        <div className="max-w-5xl mx-auto px-6 md:px-8 py-24 md:py-32">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-8">
+        <div className="max-w-5xl mx-auto px-6 md:px-8 py-24 md:py-32 home-header-container">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-8 home-title">
             <span className="block mb-4">상명대학교 커뮤니케이션디자인</span>
             졸업 전시 아카이브
           </h1>
-          <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
+          <p className="text-lg md:text-xl text-gray-600 leading-relaxed home-lead">
             상명대학교 커뮤니케이션디자인과 역대 온라인 졸업 전시 웹사이트 아카이브 플랫폼입니다. <br />
             연도별 졸업 작품을 감상하고 디자이너의 작업 과정을 탐색해보세요.
           </p>
         </div>
       </div>
-
       {/* 본문 섹션 */}
-      <div className="max-w-5xl mx-auto px-6 md:px-8 py-16 md:py-24">
+      <div className="max-w-5xl mx-auto px-6 md:px-8 py-16 md:py-24 home-body-container">
         {/* 연도별 전시 목록 */}
         <div className="mb-24">
           <div className="flex flex-col mb-12">
@@ -47,7 +45,7 @@ export default function Home() {
                   <tr className="group cursor-pointer">
                     <td className="py-6 pr-6 border-t border-gray-100">2025</td>
                     <td className="py-6 pr-6 border-t border-gray-100 font-medium">2025 졸업 전시</td>
-                    <td className="py-6 pr-6 border-t border-gray-100">92명</td>
+                    <td className="py-6 pr-6 border-t border-gray-100">95명</td>
                     <td className="py-6 pr-6 border-t border-gray-100">200+개</td>
                     <td className="py-6 pr-6 border-t border-gray-100">2025. 11. 13 (목) - 2025. 11. 19 (수)</td>
                     <td className="py-6 border-t border-gray-100 text-right">
@@ -80,13 +78,12 @@ export default function Home() {
             </div>
           </div>
         </div>
-
         {/* 아카이브 소개 */}
-        <div className="mb-24">
+        <div className="mb-24 home-about-section">
           <p className="text-sm font-mono uppercase tracking-wider text-gray-500 mb-2">About</p>
           <h2 className="text-2xl md:text-3xl font-semibold mb-8">아카이브 소개</h2>
           
-          <div className="prose prose-lg text-gray-600 max-w-none">
+          <div className="prose prose-lg text-gray-600 max-w-none home-about-prose">
             <p>
               본 아카이브는 학교 전시 작품들을 온라인에서 영구적으로 보존하고 공유하기 위해 
               제작되었습니다. <br /> 연도별 전시를 통해 학생들의 성장과 발전을 한눈에 볼 수 있습니다.
@@ -106,7 +103,7 @@ export default function Home() {
       
       {/* 푸터 */}
       <div className="border-t border-gray-200 mt-12">
-        <div className="max-w-5xl mx-auto px-6 md:px-8 py-12">
+        <div className="max-w-5xl mx-auto px-6 md:px-8 py-12 home-footer-container">
           <p className="text-sm text-gray-500 text-center">
             © {new Date().getFullYear()} 상명대학교 커뮤니케이션디자인 전공 졸업 전시 아카이브
           </p>
