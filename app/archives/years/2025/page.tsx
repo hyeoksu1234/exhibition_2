@@ -312,25 +312,26 @@ export default function Exhibition2025Home() {
                 {content}
               </div>
             ))}
-            <div className="hero-box relative mx-auto flex justify-center" style={{ width: '964px', height: '542px' }}>
-              <div
-                className="rail-vertical absolute top-1/2 right-full -translate-y-1/2 bg-black z-15"
-                style={{ width: LAYOUT.BORDERS.VERTICAL_WIDTH, height: '542px' }}
-              />
-              <div
-                className="rail-vertical absolute top-1/2 left-full -translate-y-1/2 bg-black z-15"
-                style={{ width: LAYOUT.BORDERS.VERTICAL_WIDTH, height: '542px' }}
-              />
-              <div className="w-full h-full relative rounded-lg overflow-hidden">
-                {/* Default hero (desktop/tablet) */}
-                <Image
-                  src="/images/hero/hero_main.png"
-                  alt="Hero Main Image"
-                  fill
-                  className="object-cover hero-default"
-                  priority
-                />
-                {/* 390 breakpoint hero replacement */}
+            <div
+              className="hero-box relative mx-auto flex justify-center"
+              style={{ width: '100%', maxWidth: '964px', aspectRatio: '964 / 542' }}
+            >
+              {/* Rails: slightly shorter than default by reducing extend */}
+              <ContainerRails railWidth={LAYOUT.BORDERS.VERTICAL_WIDTH} extend={0} />
+              <div className="absolute inset-0 rounded-lg overflow-hidden">
+                {/* Default hero (desktop/tablet): video */}
+                <video
+                  className="object-cover hero-default w-full h-full"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  poster="/images/hero/hero_main.mp4"
+                >
+                  <source src="/images/hero/hero_main.mp4" type="video/mp4" />
+                </video>
+                {/* 390 breakpoint hero replacement: static image */}
                 <img
                   src="/images/hero/hero_360.png"
                   alt="Hero 360 Image"

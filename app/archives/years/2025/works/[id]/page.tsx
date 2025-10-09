@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { getWorkById } from '@/app/lib/supabase'
+import { works } from '@/app/lib/data/works'
+import { designers } from '@/app/lib/data/designers'
+import { englishNameByStudentNumber } from '@/app/lib/data/student-data'
 
 // 페이지 매개변수 타입
 interface WorkDetailPageProps {
@@ -9,40 +11,12 @@ interface WorkDetailPageProps {
   }
 }
 
-export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
+export default function WorkDetailPage({ params }: WorkDetailPageProps) {
   const workId = parseInt(params.id)
-  
-  // 실제로는 DB에서 데이터 가져오기
-  // const work = await getWorkById(workId)
-  
-  // 현재는 더미 데이터 사용
-  const work = {
-    id: workId,
-    title: '작품 제목 ' + workId,
-    description: '이 작품은 다양한 디자인 요소와 창의적인 접근을 통해 새로운 시각적 경험을 제공합니다. 세부적인 디테일과 조화로운 구성을 통해 관람객에게 깊은 인상을 남기는 것을 목표로 하였습니다.',
-    images: [
-      '/images/works/detail-1.jpg',
-      '/images/works/detail-2.jpg',
-      '/images/works/detail-3.jpg'
-    ],
-    category: workId % 2 === 0 ? '융합디자인스튜디오' : '혁신디자인스튜디오',
-    professor: workId % 2 === 0 ? '김성민 교수' : '이지현 교수',
-    tags: ['그래픽디자인', '타이포그래피', '브랜딩'],
-    users: {
-      id: 100 + workId,
-      name: workId === 1 ? '홍길동' : 
-            workId === 2 ? '김철수' : 
-            workId === 3 ? '이영희' : 
-            workId === 4 ? '박민수' : 
-            workId === 5 ? '정지원' : 
-            workId === 6 ? '최유진' : 
-            '알 수 없음',
-      profile_image: '/images/profiles/user-' + workId + '.jpg',
-      major: '커뮤니케이션디자인과',
-    }
-  }
+  const work = works.find(w => w.id === workId)
+  const designer = work ? designers.find(d => d.id === work.userId) : undefined
 
-  if (!work) {
+  if (!work || !designer) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -55,178 +29,56 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
       </div>
     )
   }
+  const roman = designer.student_number ? englishNameByStudentNumber[designer.student_number] : undefined
+
+  // 추천 작품 4개
+  const related = works.filter(w => w.id !== work.id && w.category === work.category).slice(0, 4)
 
   return (
-    <div className="min-h-screen bg-white pb-24">
-      {/* 작품 헤더 */}
-      <div className="bg-gray-50 py-16">
-        <div className="container mx-auto px-6">
-          <div className="max-w-5xl mx-auto">
-            <div className="flex items-center space-x-2 text-sm text-gray-500 mb-6">
-              <Link href="/archives/years/2025" className="hover:text-primary-700">홈</Link>
-              <span>/</span>
-              <Link href="/archives/years/2025/works" className="hover:text-primary-700">작품</Link>
-              <span>/</span>
-              <span>{work.title}</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">{work.title}</h1>
-            <div className="flex flex-wrap items-center gap-3 mb-6">
-              <span className="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded-full">
-                {work.category}
-              </span>
-              <span className="text-gray-600">| 지도교수: {work.professor}</span>
-            </div>
-            <div className="flex items-center mt-6">
-              <div className="text-left">
-                <Link href={`/archives/years/2025/designers/${work.users.id}`} className="font-medium text-lg hover:text-primary-700">
-                  {work.users.name}
-                </Link>
-                <p className="text-gray-600">{work.users.major}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 작품 메인 이미지 */}
-      <div className="container mx-auto px-6 py-12">
-        <div className="max-w-5xl mx-auto">
-          <div className="bg-gray-100 rounded-lg overflow-hidden aspect-video mb-12">
-            <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
-              대표 이미지
-            </div>
+    <div className="min-h-screen bg-white">
+      <div className="container mx-auto px-6 py-10">
+        <div className="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-[minmax(0,720px)_minmax(0,1fr)] gap-10">
+          {/* Left: main visual */}
+          <div>
+            <div className="w-full bg-[repeating-linear-gradient(45deg,#efefef_0,#efefef_24px,#f8f8f8_24px,#f8f8f8_48px)] border border-gray-200 min-h-[720px]" />
+            {/* Video placeholder */}
+            <div className="mt-10 w-full h-[220px] bg-gray-200 border border-gray-200" />
           </div>
 
-          {/* 작품 설명 */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div className="md:col-span-2">
-              <h2 className="text-2xl font-bold mb-6">작품 설명</h2>
-              <p className="text-gray-700 leading-relaxed mb-8">
-                {work.description}
-              </p>
-
-              {/* 추가 이미지들 */}
-              <div className="space-y-8 mt-12">
-                {work.images.slice(1).map((image, index) => (
-                  <div key={index} className="bg-gray-100 rounded-lg overflow-hidden">
-                    <div className="w-full h-80 flex items-center justify-center bg-gray-200 text-gray-500">
-                      상세 이미지 {index + 1}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* 작품 정보 사이드바 */}
-            <div>
-              <div className="bg-gray-50 p-6 rounded-lg sticky top-24">
-                <h3 className="text-lg font-medium mb-4">작품 정보</h3>
-                
-                <div className="border-t pt-4 mt-4">
-                  <h4 className="text-sm font-medium text-gray-500 mb-2">카테고리</h4>
-                  <p className="mb-4">{work.category}</p>
-                </div>
-
-                <div className="border-t pt-4 mt-4">
-                  <h4 className="text-sm font-medium text-gray-500 mb-2">지도교수</h4>
-                  <p className="mb-4">{work.professor}</p>
-                </div>
-
-                <div className="border-t pt-4 mt-4">
-                  <h4 className="text-sm font-medium text-gray-500 mb-2">태그</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {work.tags.map((tag, index) => (
-                      <span key={index} className="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded-full">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="border-t pt-4 mt-4">
-                  <h4 className="text-sm font-medium text-gray-500 mb-2">디자이너</h4>
-                  <Link 
-                    href={`/archives/years/2025/designers/${work.users.id}`} 
-                    className="flex items-center hover:bg-gray-100 p-2 rounded-lg"
-                  >
-                    <div className="text-left">
-                      <p className="font-medium">{work.users.name}</p>
-                      <p className="text-sm text-gray-500">{work.users.major}</p>
-                    </div>
-                  </Link>
-                </div>
-
-                <div className="border-t pt-4 mt-4">
-                  <h4 className="text-sm font-medium text-gray-500 mb-2">공유하기</h4>
-                  <div className="flex space-x-2 mt-2">
-                    <button className="p-2 bg-gray-200 rounded-full hover:bg-gray-300">
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                      </svg>
-                    </button>
-                    <button className="p-2 bg-gray-200 rounded-full hover:bg-gray-300">
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
-                      </svg>
-                    </button>
-                    <button className="p-2 bg-gray-200 rounded-full hover:bg-gray-300">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                      </svg>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 다른 작품 추천 */}
-      <div className="bg-gray-50 py-16 mt-16">
-        <div className="container mx-auto px-6">
-          <h2 className="text-2xl font-bold mb-12 text-center">다른 작품 둘러보기</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {[1, 2, 3].map((id) => {
-              // 1부터 6까지 순환하도록 설정
-              const nextWorkId = (workId + id) % 6 || 6; // 0이 되면 6으로 처리
-              let designerName;
-              
-              // 작품 ID에 따라 디자이너 이름 할당
-              switch(nextWorkId) {
-                case 1: designerName = '홍길동'; break;
-                case 2: designerName = '김철수'; break;
-                case 3: designerName = '이영희'; break;
-                case 4: designerName = '박민수'; break;
-                case 5: designerName = '정지원'; break;
-                case 6: designerName = '최유진'; break;
-                default: designerName = '알 수 없음';
-              }
-              
-              return (
-                <Link key={id} href={`/archives/years/2025/works/${nextWorkId}`} className="group">
-                  <div className="bg-white rounded-lg overflow-hidden shadow-sm">
-                    <div className="aspect-square bg-gray-200 flex items-center justify-center text-gray-400 group-hover:text-gray-600">
-                      작품 이미지
-                    </div>
-                    <div className="p-4">
-                      <h3 className="font-medium group-hover:text-primary-700">작품 제목 {nextWorkId}</h3>
-                      <p className="text-gray-500 text-sm">
-                        {designerName}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-          <div className="text-center mt-12">
-            <Link href="/archives/years/2025/works" className="px-6 py-3 bg-primary-800 text-white rounded-lg hover:bg-primary-700 inline-block">
-              작품 더 보기
+          {/* Right: meta and description */}
+          <aside className="lg:pl-2">
+            <Link href="/archives/years/2025/works" className="text-gray-600 hover:text-black inline-flex items-center mb-6">
+              <Image src="/images/works/arrow.svg" alt="" width={16} height={16} className="mr-2" />
+              <span className="rix-font text-[16px]">뒤로가기</span>
             </Link>
+            <h1 className="pretendard-font text-[26px] font-extrabold text-black leading-snug mb-2">{work.title}</h1>
+            <div className="pretendard-font text-[18px] font-bold text-[#D5B27D] mb-5">
+              {designer.name}
+              {roman ? <span className="ml-2 text-[#D5B27D] font-bold">{roman}</span> : null}
+            </div>
+            <p className="pretendard-font text-[18px] font-medium leading-6 text-gray-700 whitespace-pre-line mb-6">
+              {work.description}
+            </p>
+            <div className="pretendard-font text-[18px] font-bold text-gray-700">
+              {work.category} | {work.professor}
+            </div>
+          </aside>
+        </div>
+
+        {/* Related */}
+        <div className="mx-auto max-w-6xl mt-12">
+          <span className="inline-flex items-center px-2 py-0.5 -rotate-1" style={{ background: '#DDFF8E', border: '1px solid #000' }}>다른 작품 둘러보기</span>
+          <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+            {related.map(r => (
+              <Link key={r.id} href={`/archives/years/2025/works/${r.id}`} className="block group">
+                <div className="aspect-[4/3] w-full bg-[repeating-linear-gradient(45deg,#efefef_0,#efefef_24px,#f8f8f8_24px,#f8f8f8_48px)]" />
+                <div className="mt-3 pretendard-font font-bold text-[14px] text-gray-900">{r.title}</div>
+                <div className="pretendard-font text-[12px] text-[#8b8b8b]">{designers.find(d => d.id === r.userId)?.name || ''}</div>
+              </Link>
+            ))}
           </div>
         </div>
       </div>
     </div>
   )
-} 
+}

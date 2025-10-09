@@ -1,7 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import Footer from "../components/Footer";
+import { works as allWorks } from "@/app/lib/data/works";
+import { designers as allDesigners } from "@/app/lib/data/designers";
 
 type StudioKey = "convergence" | "innovation";
 
@@ -24,45 +27,28 @@ const STUDIOS: Record<StudioKey, { label: string; en: string; icon: string; desc
   },
 };
 
-type Work = {
-  id: number;
-  title: string;
-  student: string;
-  professor: string; // 교수 필터
-  studio: StudioKey;
-};
-
 export default function WorksPage() {
   const [active, setActive] = useState<StudioKey>("convergence");
   const [profFilter, setProfFilter] = useState<string>("전체");
 
-  // Placeholder works (샘플 데이터)
-  const works: Work[] = useMemo(() => {
-    const convProfs = ["이원제 교수님", "유동관 교수님", "신윤진 교수님", "남정 교수님"];
-    const inovProfs = ["김한솔 교수님", "손우성 교수님", "서승연 교수님", "안혜선 교수님"];
-    const make = (count: number, studio: StudioKey) =>
-      Array.from({ length: count }).map((_, i) => ({
-        id: i + 1 + (studio === "innovation" ? 1000 : 0),
-        title: "조건과 결과, 디지털 사고",
-        student: "김혜령",
-        professor:
-          studio === "convergence"
-            ? convProfs[i % convProfs.length]
-            : inovProfs[i % inovProfs.length],
-        studio,
-      }));
-    return [...make(12, "convergence"), ...make(12, "innovation")];
+  // userId -> 디자이너 이름 매핑
+  const nameById = useMemo(() => {
+    const m = new Map<number, string>();
+    allDesigners.forEach((d) => m.set(d.id, d.name));
+    return m;
   }, []);
 
+  // 실데이터 기반 필터링
   const filtered = useMemo(() => {
-    const byStudio = works.filter((w) => w.studio === active);
-    if (profFilter === "전체") return byStudio;
-    return byStudio.filter((w) => w.professor === profFilter);
-  }, [works, active, profFilter]);
+    const targetCategory = active === "innovation" ? "혁신디자인스튜디오" : "융합디자인스튜디오";
+    let byStudio = allWorks.filter((w) => w.category === targetCategory);
+    if (profFilter !== "전체") byStudio = byStudio.filter((w) => w.professor === profFilter);
+    return byStudio;
+  }, [active, profFilter]);
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="container mx-auto px-6 py-16">
+      <div className="container mx-auto px-6 pt-8 pb-16">
         {/* 상단 제목 및 설명 제거 요청에 따라 삭제됨 */}
 
         {/* 상단 스튜디오 탭 (두 개) */}
@@ -80,10 +66,10 @@ export default function WorksPage() {
                 }}
                 aria-pressed={isActive}
                 className={[
-                  "relative w-full text-center rounded-md border-2 transition-all",
+                  "relative w-full text-center transition-all",
                   isActive
-                    ? "bg-lime-300 border-black shadow-[4px_4px_0_0_rgba(0,0,0,1)]"
-                    : "bg-gray-100 border-gray-300 text-gray-400",
+                    ? "bg-lime-300 shadow-[4px_4px_0_0_rgba(0,0,0,1)]"
+                    : "bg-gray-100 text-gray-400",
                 ].join(" ")}
               >
                 <div className="px-5 py-4 text-center">
@@ -112,10 +98,10 @@ export default function WorksPage() {
               type="button"
               onClick={() => setProfFilter("전체")}
               className={[
-                "px-3 py-1 rounded-md border text-sm",
+                "px-3 py-1 text-sm",
                 profFilter === "전체"
-                  ? "bg-lime-300 border-black text-black shadow-[2px_2px_0_0_rgba(0,0,0,1)]"
-                  : "bg-gray-100 border-gray-200 text-gray-600 hover:bg-gray-50",
+                  ? "bg-lime-300 text-black shadow-[2px_2px_0_0_rgba(0,0,0,1)]"
+                  : "bg-gray-100 text-gray-600 hover:bg-gray-50",
               ].join(" ")}
             >
               전체
@@ -126,10 +112,10 @@ export default function WorksPage() {
                 type="button"
                 onClick={() => setProfFilter(p)}
                 className={[
-                  "px-3 py-1 rounded-md border text-sm",
+                  "px-3 py-1 text-sm",
                   profFilter === p
-                    ? "bg-lime-300 border-black text-black shadow-[2px_2px_0_0_rgba(0,0,0,1)]"
-                    : "bg-gray-100 border-gray-200 text-gray-600 hover:bg-gray-50",
+                    ? "bg-lime-300 text-black shadow-[2px_2px_0_0_rgba(0,0,0,1)]"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-50",
                 ].join(" ")}
               >
                 {p}
@@ -140,13 +126,11 @@ export default function WorksPage() {
           {/* 작품 그리드 */}
           <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filtered.map((w) => (
-              <div key={`${w.studio}-${w.id}`} className="group">
-                <div
-                  className="aspect-[4/3] w-full rounded-md border border-gray-200 bg-[repeating-linear-gradient(45deg,#e9e9e9_0px,#e9e9e9_12px,#f6f6f6_12px,#f6f6f6_24px)]"
-                />
-                <div className="mt-3 text-[15px] text-gray-900">{w.title}</div>
-                <div className="text-sm text-gray-600">{w.student}</div>
-              </div>
+              <Link key={`${w.category}-${w.id}`} href={`/archives/years/2025/works/${w.id}`} className="group block">
+                <div className="aspect-[4/3] w-full rounded-md border border-gray-200 bg-[repeating-linear-gradient(45deg,#e9e9e9_0px,#e9e9e9_12px,#f6f6f6_12px,#f6f6f6_24px)]" />
+                <div className="mt-3 pretendard-font font-bold text-[20px] text-gray-900">{w.title}</div>
+                <div className="pretendard-font font-bold text-[16px] text-[#8b8b8b]">{nameById.get(w.userId) || ""}</div>
+              </Link>
             ))}
           </div>
         </section>

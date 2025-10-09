@@ -60,6 +60,16 @@
   font-display: swap;
 }
 
+/* ExtraBold weight for Pretendard (provide files in /public/fonts) */
+@font-face {
+  font-family: "Pretendard";
+  src: url('/fonts/Pretendard-ExtraBold.woff2') format('woff2'),
+       url('/fonts/Pretendard-ExtraBold.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

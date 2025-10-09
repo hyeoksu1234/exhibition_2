@@ -177,14 +177,14 @@ export default async function DesignerDetailPage({ params }: DesignerDetailPageP
               <span className="inline-flex items-center px-2 py-0.5 -rotate-1" style={{ background: '#DDFF8E', border: '1px solid #000' }}>[ 1 ]</span>
             </div>
             <h3 className="text-lg md:text-xl font-normal mb-3">4년동안 디자인 전공을 하며 생긴 새로운 습관이나 태도가 있다면 무엇인가요?</h3>
-            <p className="pretendard-font text-gray-700 leading-relaxed break-keep" style={{ wordBreak: 'keep-all' }}>{designer.interview1}</p>
+            <p className="pretendard-font text-gray-700 leading-relaxed break-keep whitespace-pre-line max-w-[68ch] md:max-w-[72ch]" style={{ wordBreak: 'keep-all' }}>{formatBio(designer.interview1)}</p>
           </div>
           <div>
             <div className="mb-3">
               <span className="inline-flex items-center px-2 py-0.5 -rotate-1" style={{ background: '#DDFF8E', border: '1px solid #000' }}>[ 2 ]</span>
             </div>
             <h3 className="text-lg md:text-xl font-normal mb-3">졸업 작품 작업을 하면서 가장 고민했던 점이나 기억에 남는 순간이 있다면 무엇인가요?</h3>
-            <p className="pretendard-font text-gray-700 leading-relaxed break-keep" style={{ wordBreak: 'keep-all' }}>{designer.interview2}</p>
+            <p className="pretendard-font text-gray-700 leading-relaxed break-keep whitespace-pre-line max-w-[68ch] md:max-w-[72ch]" style={{ wordBreak: 'keep-all' }}>{formatBio(designer.interview2)}</p>
           </div>
         </div>
       </section>
@@ -197,12 +197,18 @@ export default async function DesignerDetailPage({ params }: DesignerDetailPageP
         <div className="container mx-auto px-[30px]">
           <h2 className="text-2xl md:text-3xl font-normal mb-8">Project</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
-            {getWorksByUserId(designer.id).map((work) => (
+            {(() => {
+              const all = getWorksByUserId(designer.id)
+              const conv = all.find(w => w.category === '융합디자인스튜디오')
+              const inov = all.find(w => w.category === '혁신디자인스튜디오')
+              const two = [conv, inov].filter(Boolean)
+              return two
+            })().map((work) => (
               <Link key={work.id} href={`/archives/years/2025/works/${work.id}`} className="block group">
                 <div className="w-full aspect-[4/3] bg-[repeating-linear-gradient(45deg,#e6e6e6_0,#e6e6e6_12px,#f5f5f5_12px,#f5f5f5_24px)] border border-gray-200" />
                 <div className="mt-3">
                   <div className="text-sm text-black leading-tight">{work.title}</div>
-                  <div className="text-xs text-gray-600 pretendard-font">{work.category} | 지도교수</div>
+                  <div className="text-xs text-gray-600 pretendard-font">{work.category} | {work.professor}</div>
                 </div>
               </Link>
             ))}

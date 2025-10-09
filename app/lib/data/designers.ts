@@ -1,5 +1,5 @@
 import { Designer } from '../types';
-import { realStudentData as studentData, instagramHandlesByName, emailByName, bioByName } from './student-data';
+import { realStudentData as studentData, instagramHandlesByName, emailByName, bioByName, interview1ByName, interview2ByName } from './student-data';
 
 // 실제 학생 데이터는 student-data.ts에서 import
 /* const studentData = [
@@ -170,6 +170,18 @@ export function generateDesigners(inputStudentData?: any[]): Designer[] {
       ? (bioEntry[Math.min(seq, bioEntry.length - 1)] || bioTemplates[Math.floor(Math.random() * bioTemplates.length)])
       : (bioEntry || bioTemplates[Math.floor(Math.random() * bioTemplates.length)]);
 
+    // 인터뷰 Q1 매핑 (동명이인은 배열 순서 적용)
+    const q1Entry: any = (interview1ByName as any)[student.name];
+    const interview1 = Array.isArray(q1Entry)
+      ? (q1Entry[Math.min(seq, q1Entry.length - 1)] || interview1Templates[Math.floor(Math.random() * interview1Templates.length)])
+      : (q1Entry || interview1Templates[Math.floor(Math.random() * interview1Templates.length)]);
+
+    // 인터뷰 Q2 매핑 (동명이인은 배열 순서 적용)
+    const q2Entry: any = (interview2ByName as any)[student.name];
+    const interview2 = Array.isArray(q2Entry)
+      ? (q2Entry[Math.min(seq, q2Entry.length - 1)] || interview2Templates[Math.floor(Math.random() * interview2Templates.length)])
+      : (q2Entry || interview2Templates[Math.floor(Math.random() * interview2Templates.length)]);
+
     return {
       id: index + 1,
       name: student.name,
@@ -180,8 +192,8 @@ export function generateDesigners(inputStudentData?: any[]): Designer[] {
       email,
       instagram: instagram,
       website: undefined,
-      interview1: interview1Templates[Math.floor(Math.random() * interview1Templates.length)],
-      interview2: interview2Templates[Math.floor(Math.random() * interview2Templates.length)],
+      interview1,
+      interview2,
       student_number: student.studentNumber
     };
   });
