@@ -86,6 +86,31 @@ export default async function DesignerDetailPage({ params }: DesignerDetailPageP
       <section id="info" className="py-8 xl:h-[590px]">
         <div className="container mx-auto px-[30px]">
           <div className="grid grid-cols-1 md:grid-cols-[302px_1fr] gap-6 md:gap-10 items-stretch">
+            {/* Mobile: 이름을 사진 위로 배치 */}
+            <div className="md:hidden flex justify-center mb-2 text-center">
+              <div className="relative inline-block align-middle">
+                <img
+                  src="/images/profiles/Group 1073.png"
+                  alt="name bracket"
+                  className="h-[120px] w-auto select-none"
+                  aria-hidden="true"
+                />
+                <div className="absolute inset-0 flex flex-col items-center justify-center px-5 text-center">
+                  <span
+                    className="leading-tight whitespace-nowrap"
+                    style={{ fontFamily: '"rixdongnimgothic-pro", sans-serif', fontSize: '33px', fontWeight: 400 }}
+                  >
+                    {designer.name}
+                  </span>
+                  <span
+                    className="text-black leading-tight whitespace-nowrap"
+                    style={{ fontFamily: '"rixdongnimgothic-pro", sans-serif', fontSize: '22px', fontWeight: 700 }}
+                  >
+                    {englishNameByStudentNumber[designer.student_number ?? ''] || romanizeKorean(designer.name)}
+                  </span>
+                </div>
+              </div>
+            </div>
             {/* 왼쪽: 학생 사진 (이름 기반) */}
             <div className="relative overflow-hidden border border-gray-200 w-[302px] h-[370px] mx-auto md:mx-0 md:mt-[20px]">
               <Image
@@ -98,8 +123,8 @@ export default async function DesignerDetailPage({ params }: DesignerDetailPageP
             </div>
             {/* 우측 정보 */}
             <div className="md:h-[370px] flex flex-col justify-start">
-              {/* 이름: 괄호 PNG 한 장 위에 텍스트 오버레이 */}
-              <div className="mb-4">
+              {/* 이름: 괄호 PNG 한 장 위에 텍스트 오버레이 (데스크톱 전용) */}
+              <div className="mb-4 hidden md:block">
                 <div className="relative inline-block align-middle">
                   <img
                     src="/images/profiles/Group 1073.png"
@@ -163,9 +188,9 @@ export default async function DesignerDetailPage({ params }: DesignerDetailPageP
         </div>
       </section>
 
-      {/* 구분선 */}
+      {/* 구분선 (모바일에서 숨김) */}
       <div className="container mx-auto px-[30px]">
-        <div className="h-[12px] bg-black" />
+        <div className="h-[12px] bg-black hidden md:block" />
       </div>
 
       {/* interview */}
@@ -189,8 +214,8 @@ export default async function DesignerDetailPage({ params }: DesignerDetailPageP
         </div>
       </section>
 
-      {/* 구분선 */}
-      <div className="container mx-auto px-[30px]"><div className="h-[12px] bg-black" /></div>
+      {/* 구분선 (모바일에서 숨김) */}
+      <div className="container mx-auto px-[30px]"><div className="h-[12px] bg-black hidden md:block" /></div>
 
       {/* projects */}
       <section id="projects" className="py-10">
