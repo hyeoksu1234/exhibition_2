@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { getDesignerById } from '@/app/lib/data/designers'
 import { englishNameByStudentNumber, photoFileByStudentNumber } from '@/app/lib/data/student-data'
 import { getWorksByUserId } from '@/app/lib/data/works'
+import type { Work } from '@/app/lib/types'
 
 // 간단 로마자 변환(표시용)
 function romanizeKorean(str: string): string {
@@ -226,7 +227,8 @@ export default async function DesignerDetailPage({ params }: DesignerDetailPageP
               const all = getWorksByUserId(designer.id)
               const conv = all.find(w => w.category === '융합디자인스튜디오')
               const inov = all.find(w => w.category === '혁신디자인스튜디오')
-              const two = [conv, inov].filter(Boolean)
+              // Filter with a type guard so TS narrows undefined
+              const two = [conv, inov].filter((w): w is Work => w !== undefined)
               return two
             })().map((work) => (
               <Link key={work.id} href={`/archives/years/2025/works/${work.id}`} className="block group">
