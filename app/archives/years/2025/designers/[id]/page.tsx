@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { getDesignerById } from '@/app/lib/data/designers'
-import { englishNameByStudentNumber, photoFileByStudentNumber } from '@/app/lib/data/student-data'
+import { englishNameByStudentNumber, buildProfileImageSrc } from '@/app/lib/data/student-data'
 import { getWorksByUserId } from '@/app/lib/data/works'
 import type { Work } from '@/app/lib/types'
 
@@ -115,7 +115,7 @@ export default async function DesignerDetailPage({ params }: DesignerDetailPageP
             {/* 왼쪽: 학생 사진 (이름 기반) */}
             <div className="relative overflow-hidden border border-gray-200 w-[302px] h-[370px] mx-auto min-[900px]:mx-0 min-[900px]:mt-[20px]">
               <Image
-                src={`/images/profiles/images/${encodeURIComponent(photoFileByStudentNumber[designer.student_number ?? ''] || designer.name + '.jpg')}`}
+                src={buildProfileImageSrc(designer.student_number, designer.name)}
                 alt={`${designer.name} 사진`}
                 fill
                 sizes="(min-width: 900px) 302px, 50vw"

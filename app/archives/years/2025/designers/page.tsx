@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link'
-import { realStudentData, englishNameByStudentNumber, photoFileByStudentNumber } from '@/app/lib/data/student-data'
+import { realStudentData, englishNameByStudentNumber, buildProfileImageSrc } from '@/app/lib/data/student-data'
 import Footer from '../components/Footer'
 import { generateDesigners } from '@/app/lib/data/designers'
 
@@ -123,7 +123,7 @@ export default function DesignersPage() {
               <Link key={designer.id} href={`/archives/years/2025/designers/${designer.id}`} className="block group w-full sm:w-[210px] mx-auto">
                 <div className="relative overflow-hidden border border-gray-200 w-full aspect-[210/256] sm:w-[210px] sm:h-[256px] sm:aspect-auto">
                   <img
-                    src={`/images/profiles/images/${photoFileByStudentNumber[designer.student_number ?? ''] || designer.name + '.jpg'}`}
+                    src={buildProfileImageSrc(designer.student_number, designer.name)}
                     alt={`${designer.name} 사진`}
                     className="absolute inset-0 w-full h-full object-cover"
                     onError={(e) => {
