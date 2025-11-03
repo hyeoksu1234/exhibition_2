@@ -162,10 +162,10 @@
       display: block;
     }
     .footer-title-divider { display: none !important; }
-    .footer-root { height: auto !important; padding-bottom: 24px !important; }
-    .footer-bound {
-      padding-left: 20px !important;
-      padding-right: 20px !important;
+  .footer-root { height: auto !important; padding-bottom: 24px !important; }
+  .footer-bound {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
       padding-top: 130px !important;
     }
     .footer-main-title {
@@ -241,8 +241,8 @@
   /* Navigation mobile behaviour for small screens */
   @media (max-width: 600px) {
     body {
-      padding-left: 20px;
-      padding-right: 20px;
+      padding-left: 0;
+      padding-right: 0;
     }
     .nav-bar {
       height: 40px !important;
