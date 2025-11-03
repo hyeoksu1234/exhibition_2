@@ -213,11 +213,11 @@ export const photoFileByStudentNumber: Record<string, string> = {
   '202120221': '김민지_2.jpg',
 };
 
-// 퍼블릭 이미지 경로 생성 (맥 OS의 NFD 파일명을 배포 환경과 일치시킴)
+// 퍼블릭 이미지 경로 생성 (문자 정규화/NFC 유지)
 export function buildProfileImageSrc(studentNumber: string | undefined, fallbackName: string): string {
   const candidate = photoFileByStudentNumber[studentNumber ?? ''] || `${fallbackName}.jpg`
-  const normalized = candidate.normalize('NFD')
-  return `/images/profiles/images/${encodeURIComponent(normalized)}`
+  const normalized = candidate.normalize('NFC')
+  return `/images/profiles/images/${normalized}`
 }
 
 // 인스타그램 핸들(이름 기준, 중복 이름은 배열 순서대로 매칭)
