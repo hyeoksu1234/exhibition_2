@@ -99,6 +99,7 @@ export const FOOTER_STYLES = {
     left: FOOTER_CONSTANTS.POSITIONS.CONTENT_LEFT,
     right: '52px',
     width: 'auto',
+    marginLeft: '0px',
     top: '36px',
     position: 'absolute' as const,
     flexDirection: 'column' as const,
