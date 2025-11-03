@@ -1,53 +1,79 @@
-import Link from 'next/link'
-import { FOOTER_STYLES, FOOTER_CONSTANTS } from '../constants/footer'
-import { 
-  FooterLabel, 
-  FooterMainTitle, 
-  FooterContentContainer, 
-  ColorBar 
-} from './FooterComponents'
+import Image from 'next/image'
 
 export default function Footer() {
   return (
-    <>
-      <footer className="footer-root pretendard-font" style={FOOTER_STYLES.container}>
-        <div className="footer-bound" style={FOOTER_STYLES.bound}>
-          {/* 메인 타이틀 */}
-          <FooterMainTitle />
-          {/* 모바일: 타이틀 하단 구분선 */}
-          <div className="footer-title-divider" />
-
-          {/* 라벨들 */}
-          <FooterLabel top="36px" left={FOOTER_CONSTANTS.POSITIONS.LABEL_LEFT}>
-            {FOOTER_CONSTANTS.LABELS.OPENING}
-          </FooterLabel>
-
-          <FooterLabel top="82px" left={FOOTER_CONSTANTS.POSITIONS.LABEL_LEFT}>
-            {FOOTER_CONSTANTS.LABELS.VENUE}
-          </FooterLabel>
-
-          <FooterLabel top="200px" left={FOOTER_CONSTANTS.POSITIONS.LABEL_LEFT}>
-            {FOOTER_CONSTANTS.LABELS.INSTAGRAM}
-          </FooterLabel>
-
-          {/* 문의전화 라벨 제거 */}
-
-          {/* 컨텐츠 컨테이너 */}
-          <FooterContentContainer />
-
-          {/* 아카이브 링크 */}
-          <Link
-            href="/"
-            className="footer-archive-link"
-            style={FOOTER_STYLES.archiveLink}
-          >
-            {FOOTER_CONSTANTS.LABELS.ARCHIVE}
-          </Link>
+    <footer className="footer-root w-full mt-24 md:mt-20 lg:mt-16">
+      <div className="footer-desktop relative">
+        <Image
+          src="/page/1440_footer.png"
+          alt="2025 졸업 전시 푸터"
+          width={1440}
+          height={259}
+          priority
+          className="h-auto w-full"
+        />
+        <div
+          className="pointer-events-none absolute inset-0 flex items-center justify-center"
+          style={{ transform: 'translateY(-10%)' }}
+        >
+          <Image
+            src="/page/1440_footer_c.png"
+            alt="2025 졸업 전시 푸터 장식"
+            width={1069}
+            height={125}
+            className="h-auto w-[69%] max-w-[1069px]"
+            priority
+          />
         </div>
-      </footer>
-      
-      {/* 컬러바 */}
-      <ColorBar />
-    </>
+      </div>
+
+      <div className="footer-tablet relative">
+        <Image
+          src="/page/1280_footer.png"
+          alt="2025 졸업 전시 푸터 (중간 화면)"
+          width={960}
+          height={204}
+          priority
+          className="h-auto w-full"
+        />
+        <div
+          className="pointer-events-none absolute inset-0 flex items-center justify-center"
+          style={{ transform: 'translateY(-10%)' }}
+        >
+          <Image
+            src="/page/1280_footer_c.png"
+            alt="2025 졸업 전시 푸터 장식 (중간 화면)"
+            width={837}
+            height={108}
+            className="h-auto w-[80%] max-w-[837px]"
+            priority
+          />
+        </div>
+      </div>
+
+      <div className="footer-mobile relative">
+        <Image
+          src="/page/mobile_footer.png"
+          alt="2025 졸업 전시 푸터 (모바일 600 이하)"
+          width={780}
+          height={754}
+          priority
+          className="h-auto w-full"
+        />
+        <div
+          className="pointer-events-none absolute inset-0 flex items-center justify-center"
+          style={{ transform: 'translateY(-10%)' }}
+        >
+          <Image
+            src="/page/mobile_footer_c.png"
+            alt="2025 졸업 전시 푸터 장식 (모바일 600 이하)"
+            width={698}
+            height={452}
+            className="h-auto w-[78%] max-w-[698px]"
+            priority
+          />
+        </div>
+      </div>
+    </footer>
   )
 }

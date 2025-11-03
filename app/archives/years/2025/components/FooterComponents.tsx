@@ -47,8 +47,15 @@ export const FooterMainTitle = () => (
 )
 
 // 컨텐츠 컨테이너 컴포넌트
-export const FooterContentContainer = () => (
-  <div className="footer-content-container" style={FOOTER_STYLES.contentContainer}>
+export const FooterContentContainer = ({ compact = false }: { compact?: boolean }) => (
+  <div
+    className="footer-content-container"
+    style={{
+      ...FOOTER_STYLES.contentContainer,
+      marginLeft: compact ? '120px' : FOOTER_STYLES.contentContainer.marginLeft,
+      width: compact ? 'calc(100% - 140px)' : FOOTER_STYLES.contentContainer.width,
+    }}
+  >
     {/* 모바일 그리드에서는 label/value 쌍으로 표시되며, 데스크톱에서는 아래 절대 배치를 사용 */}
     <span className="footer-mobile-label" aria-hidden>
       {FOOTER_CONSTANTS.LABELS.OPENING}
@@ -72,7 +79,11 @@ export const FooterContentContainer = () => (
     </span>
     <div
       className="footer-content-item footer-mobile-value"
-      style={{ ...FOOTER_STYLES.contentStyle, position: 'absolute', top: '46px' }}
+      style={{
+        ...FOOTER_STYLES.contentStyle,
+        position: 'absolute',
+        top: compact ? '40px' : '46px',
+      }}
     >
       {FOOTER_CONSTANTS.EXHIBITION_DATA.VENUE.split('\n').map((line, index) => (
         <span key={index}>
@@ -87,7 +98,11 @@ export const FooterContentContainer = () => (
     </span>
     <div
       className="footer-content-item footer-mobile-value"
-      style={{ ...FOOTER_STYLES.contentStyle, position: 'absolute', top: '164px' }}
+      style={{
+        ...FOOTER_STYLES.contentStyle,
+        position: 'absolute',
+        top: compact ? '144px' : '164px',
+      }}
     >
       {FOOTER_CONSTANTS.EXHIBITION_DATA.INSTAGRAM}
     </div>

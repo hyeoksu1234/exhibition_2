@@ -10,11 +10,18 @@ export const LAYOUT = {
   },
 } as const;
 
+export const scalePxTerm = (value: number) => `${value}px * var(--layout-scale, 1)`;
+export const scalePx = (value: number) => `calc(${scalePxTerm(value)})`;
+const layoutWidthExpr = `calc(1520px * var(--layout-scale, 1))`;
+const responsiveOffset = (base: number, delta = 0) =>
+  `calc((100vw - ${layoutWidthExpr}) / -2 - ${scalePxTerm(base)} + ${scalePxTerm(delta)})`;
+const responsiveEdge = (minValue: number, base: number, delta = 0) =>
+  `max(${scalePx(minValue)}, ${responsiveOffset(base, delta)})`;
+const scaleSum = (...values: number[]) => values.map(scalePxTerm).join(" + ");
+
 export const RESPONSIVE = {
-  left: (delta = 0) =>
-    `max(-20px, calc((100vw - 1520px) / -2 - 120px + ${delta}px))`,
-  right: (delta = 0) =>
-    `max(-20px, calc((100vw - 1520px) / -2 - 120px + ${delta}px))`,
+  left: (delta = 0) => responsiveEdge(-20, 120, delta),
+  right: (delta = 0) => responsiveEdge(-20, 120, delta),
 };
 
 export type RoleBoxProps = {
@@ -45,7 +52,7 @@ export type HeroVerticalTextProps = {
  *  ------------------------------------------------ */
 export const STYLES = {
   mainTitle: {
-    fontSize: "48px",
+    fontSize: scalePx(48),
     fontFamily: '"rixdongnimgothic-pro", sans-serif',
     fontWeight: "normal",
     letterSpacing: "-0.02em",
@@ -53,45 +60,45 @@ export const STYLES = {
     wordBreak: "keep-all" as const,
   },
   sectionLabel: {
-    fontSize: "24px",
+    fontSize: scalePx(24),
   },
   subtitle: {
-    fontSize: "22px",
-    lineHeight: "34.2px",
+    fontSize: scalePx(22),
+    lineHeight: scalePx(34.2),
     wordBreak: "keep-all" as const,
-    marginBottom: "66.6px",
+    marginBottom: scalePx(66.6),
   },
   bodyText: {
-    fontSize: "22px",
+    fontSize: scalePx(22),
     fontFamily: "Pretendard, -apple-system, BlinkMacSystemFont, sans-serif",
     fontWeight: "500",
     wordBreak: "keep-all" as const,
   },
   roleTitle: {
-    fontSize: "20px",
+    fontSize: scalePx(20),
     fontFamily: '"rixdongnimgothic-pro", sans-serif',
     fontWeight: "400",
-    lineHeight: "33.3px",
+    lineHeight: scalePx(33.3),
     whiteSpace: "nowrap" as const,
     letterSpacing: "-0.02em",
     color: "#000000",
   },
   personName: {
     color: "#3D3D3D",
-    fontSize: "18px",
+    fontSize: scalePx(18),
     fontFamily: "RixDongnimGothic_Pro",
     fontWeight: "400",
-    lineHeight: "33.3px",
+    lineHeight: scalePx(33.3),
     whiteSpace: "nowrap" as const,
     letterSpacing: "-0.02em",
     textAlign: "right" as const,
   },
   professorName: {
     color: "#3D3D3D",
-    fontSize: "19.8px",
+    fontSize: scalePx(19.8),
     fontFamily: "RixDongnimGothic_Pro",
     fontWeight: "400",
-    lineHeight: "33.3px",
+    lineHeight: scalePx(33.3),
     whiteSpace: "nowrap" as const,
     letterSpacing: "-0.02em",
     textAlign: "right" as const,
@@ -117,7 +124,7 @@ export const styles = {
 export const RoleBox = ({ children, bgColor, className = "" }: RoleBoxProps) => (
   <div
     className={`tag-box flex items-center justify-center text-black px-3 py-1 rounded-none -rotate-2 ${className}`}
-    style={{ ...STYLES.roleTitle, backgroundColor: bgColor, minWidth: "60px" }}
+    style={{ ...STYLES.roleTitle, backgroundColor: bgColor, minWidth: scalePx(60) }}
   >
     {children}
   </div>
@@ -139,7 +146,7 @@ export const ProfessorRoleBox = ({
 export const TiltBadge = ({ bg, children }: { bg: string; children: ReactNode }) => (
   <div
     className={`inline-flex items-center justify-center px-3 py-1 -rotate-2 ${styles.roleTitle}`}
-    style={{ backgroundColor: bg, minWidth: 60 }}
+    style={{ backgroundColor: bg, minWidth: scalePx(60) }}
   >
     {children}
   </div>
@@ -162,14 +169,14 @@ export const SectionBorder = () => (
       className="rail-vertical absolute top-0 h-full bg-black z-[15]"
       style={{
         left: RESPONSIVE.left(-20),
-        width: LAYOUT.BORDERS.VERTICAL_WIDTH,
+        width: scalePx(LAYOUT.BORDERS.VERTICAL_WIDTH),
       }}
     />
     <div
       className="rail-vertical absolute top-0 h-full bg-black z-[15]"
       style={{
         right: RESPONSIVE.right(-20),
-        width: LAYOUT.BORDERS.VERTICAL_WIDTH,
+        width: scalePx(LAYOUT.BORDERS.VERTICAL_WIDTH),
       }}
     />
   </>
@@ -180,10 +187,10 @@ export const HorizontalBorder = () => (
     <div
       className="rail-horizontal absolute bg-black"
       style={{
-        height: LAYOUT.BORDERS.HORIZONTAL_HEIGHT,
+        height: scalePx(LAYOUT.BORDERS.HORIZONTAL_HEIGHT),
         // Clamp offsets so the line doesn't shrink too much on small screens
-        left: "clamp(-200px, calc((100vw - 1520px) / -2 - 120px), 52px)",
-        right: "clamp(-200px, calc((100vw - 1520px) / -2 - 120px), 52px)",
+        left: `clamp(${scalePx(-200)}, ${responsiveOffset(120)}, ${scalePx(52)})`,
+        right: `clamp(${scalePx(-200)}, ${responsiveOffset(120)}, ${scalePx(52)})`,
       }}
     />
   </div>
@@ -201,7 +208,7 @@ export const SectionLabel = ({
     style={{
       ...STYLES.sectionLabel,
       top,
-      [position]: "max(-20px, calc((100vw - 1520px) / -2 - 180px))",
+      [position]: responsiveEdge(-20, 180),
       transform:
         position === "left"
           ? "translateX(-50%) translateY(-50%) rotate(90deg)"
@@ -224,7 +231,7 @@ export const HeroVerticalText = ({
     style={{
       ...STYLES.sectionLabel,
       top,
-      [position]: "max(-72px, calc((100vw - 1520px) / -2 - 167px))",
+      [position]: responsiveEdge(-72, 167),
       transform:
         position === "left"
           ? "translateX(-50%) translateY(-50%) rotate(90deg)"
@@ -255,15 +262,15 @@ export const ContainerRails = ({
 }) => {
   const extTop = extendTop ?? extend ?? 0;
   const extBottom = extendBottom ?? extend ?? 0;
-  const heightCalc = `calc(100% + ${extTop + extBottom}px)`;
+  const heightCalc = `calc(100% + ${scaleSum(extTop, extBottom)})`;
 
   return (
     <>
       <div
         className={`rail-vertical absolute right-full bg-black z-15 ${className}`.trim()}
         style={{
-          width: `${railWidth}px`,
-          top: -extTop,
+          width: scalePx(railWidth),
+          top: scalePx(-extTop),
           height: heightCalc,
           ...style,
         }}
@@ -271,8 +278,8 @@ export const ContainerRails = ({
       <div
         className={`rail-vertical absolute left-full bg-black z-15 ${className}`.trim()}
         style={{
-          width: `${railWidth}px`,
-          top: -extTop,
+          width: scalePx(railWidth),
+          top: scalePx(-extTop),
           height: heightCalc,
           ...style,
         }}
@@ -311,7 +318,7 @@ export const BorderedSection = ({
 }: BorderedSectionProps) => {
   const widthStyle =
     typeof width === "number"
-      ? { width: `${width}px`, maxWidth: "100%" }
+      ? { width: scalePx(width), maxWidth: "100%" }
       : width
       ? { width, maxWidth: "100%" }
       : {};
@@ -357,15 +364,15 @@ export const RailSection = ({
   contentStyle = {},
 }: RailSectionProps) => {
   const halfWidth = innerWidth / 2;
-  const offset = `calc(50% - ${halfWidth}px - ${railGap}px - ${railWidth}px)`;
+  const offset = `calc(50% - ${scalePxTerm(halfWidth)} - ${scalePxTerm(railGap)} - ${scalePxTerm(railWidth)})`;
 
   return (
     <section className={`relative ${className}`} style={style}>
-      <div className="rail-vertical absolute inset-y-0 bg-black" style={{ width: `${railWidth}px`, left: offset }} />
-      <div className="rail-vertical absolute inset-y-0 bg-black" style={{ width: `${railWidth}px`, right: offset }} />
+      <div className="rail-vertical absolute inset-y-0 bg-black" style={{ width: scalePx(railWidth), left: offset }} />
+      <div className="rail-vertical absolute inset-y-0 bg-black" style={{ width: scalePx(railWidth), right: offset }} />
       <div
         className={`mx-auto ${contentClassName}`.trim()}
-        style={{ width: `${innerWidth}px`, maxWidth: "100%", ...contentStyle }}
+        style={{ width: scalePx(innerWidth), maxWidth: "100%", ...contentStyle }}
       >
         {children}
       </div>

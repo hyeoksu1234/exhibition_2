@@ -1,5 +1,11 @@
 import { Work } from '../types';
 import { designers } from './designers';
+import {
+  convergenceDescriptionsByName,
+  convergenceDescriptionsByStudentNumber,
+  innovationDescriptionsByName,
+  innovationDescriptionsByStudentNumber
+} from './innovation-descriptions';
 
 // 작품 제목 템플릿
 const titlePrefixes = ['새로운', '변화하는', '연결된', '지속가능한', '미래의', '공감하는', '소통하는', '창의적인', '실험적인', '혁신적인'];
@@ -278,6 +284,7 @@ function generateWorks(): Work[] {
       // 기본값들
       let title = `${titlePrefixes[Math.floor(Math.random() * titlePrefixes.length)]} ${titleSuffixes[Math.floor(Math.random() * titleSuffixes.length)]}`;
       let professor = professors[category][Math.floor(Math.random() * professors[category].length)];
+      let description = descriptionTemplates[Math.floor(Math.random() * descriptionTemplates.length)];
 
       // 혁신디자인스튜디오 수동 오버라이드 적용
       if (category === '혁신디자인스튜디오') {
@@ -287,8 +294,23 @@ function generateWorks(): Work[] {
         if (override) {
           title = override.title;
           if (override.professor) professor = override.professor;
-          innovationSeq[designer.name] = seq + 1;
         }
+
+        const nameDescriptions = innovationDescriptionsByName[designer.name];
+        const descriptionByName = nameDescriptions?.[seq];
+        if (descriptionByName) {
+          description = descriptionByName;
+        }
+
+        const studentNumber = designer.student_number;
+        if (studentNumber) {
+          const descriptionOverride = innovationDescriptionsByStudentNumber[studentNumber];
+          if (descriptionOverride) {
+            description = descriptionOverride;
+          }
+        }
+
+        innovationSeq[designer.name] = seq + 1;
       }
 
       // 융합디자인스튜디오 수동 오버라이드 적용
@@ -299,14 +321,29 @@ function generateWorks(): Work[] {
         if (override) {
           title = override.title;
           if (override.professor) professor = override.professor;
-          convergenceSeq[designer.name] = seq + 1;
         }
+
+        const nameDescriptions = convergenceDescriptionsByName[designer.name];
+        const descriptionByName = nameDescriptions?.[seq];
+        if (descriptionByName) {
+          description = descriptionByName;
+        }
+
+        const studentNumber = designer.student_number;
+        if (studentNumber) {
+          const descriptionOverride = convergenceDescriptionsByStudentNumber[studentNumber];
+          if (descriptionOverride) {
+            description = descriptionOverride;
+          }
+        }
+
+        convergenceSeq[designer.name] = seq + 1;
       }
 
       works.push({
         id: workId,
         title,
-        description: descriptionTemplates[Math.floor(Math.random() * descriptionTemplates.length)],
+        description,
         images,
         thumbnail: `/images/works/work-${workId}-thumb.jpg`,
         category,

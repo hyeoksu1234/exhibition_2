@@ -84,11 +84,11 @@ export default async function DesignerDetailPage({ params }: DesignerDetailPageP
   return (
     <div className="min-h-screen bg-white pb-24">
       {/* info */}
-      <section id="info" className="py-8 xl:h-[590px]">
+      <section id="info" className="py-8">
         <div className="container mx-auto px-[30px]">
-          <div className="grid grid-cols-1 md:grid-cols-[302px_1fr] gap-6 md:gap-10 items-stretch">
+          <div className="grid grid-cols-1 min-[900px]:grid-cols-[302px_1fr] gap-6 min-[900px]:gap-10 items-stretch">
             {/* Mobile: 이름을 사진 위로 배치 */}
-            <div className="md:hidden flex justify-center mb-2 text-center">
+            <div className="min-[900px]:hidden flex justify-center mb-2 text-center">
               <div className="relative inline-block align-middle">
                 <img
                   src="/images/profiles/Group 1073.png"
@@ -113,24 +113,24 @@ export default async function DesignerDetailPage({ params }: DesignerDetailPageP
               </div>
             </div>
             {/* 왼쪽: 학생 사진 (이름 기반) */}
-            <div className="relative overflow-hidden border border-gray-200 w-[302px] h-[370px] mx-auto md:mx-0 md:mt-[20px]">
+            <div className="relative overflow-hidden border border-gray-200 w-[302px] h-[370px] mx-auto min-[900px]:mx-0 min-[900px]:mt-[20px]">
               <Image
                 src={`/images/profiles/images/${encodeURIComponent(photoFileByStudentNumber[designer.student_number ?? ''] || designer.name + '.jpg')}`}
                 alt={`${designer.name} 사진`}
                 fill
-                sizes="(min-width: 768px) 302px, 50vw"
+                sizes="(min-width: 900px) 302px, 50vw"
                 className="object-cover"
               />
             </div>
             {/* 우측 정보 */}
-            <div className="md:h-[370px] flex flex-col justify-start">
+            <div className="min-[900px]:h-[370px] flex flex-col justify-start">
               {/* 이름: 괄호 PNG 한 장 위에 텍스트 오버레이 (데스크톱 전용) */}
-              <div className="mb-4 hidden md:block">
+              <div className="mb-4 hidden min-[900px]:block">
                 <div className="relative inline-block align-middle">
                   <img
                     src="/images/profiles/Group 1073.png"
                     alt="name bracket"
-                    className="h-[120px] md:h-[168px] w-auto select-none"
+                    className="h-[120px] min-[900px]:h-[168px] w-auto select-none"
                     aria-hidden="true"
                   />
                   <div className="absolute inset-0 flex flex-col items-center justify-center px-5 text-center">
@@ -181,7 +181,7 @@ export default async function DesignerDetailPage({ params }: DesignerDetailPageP
                   )}
                 </div>
               </div>
-              <p className="pretendard-font text-gray-700 leading-relaxed break-keep whitespace-pre-line max-w-[68ch] md:max-w-[72ch]" style={{ wordBreak: 'keep-all' }}>
+              <p className="pretendard-font text-gray-700 leading-relaxed break-keep whitespace-pre-line max-w-[68ch] min-[900px]:max-w-[72ch]" style={{ wordBreak: 'keep-all' }}>
                 {formatBio(designer.bio)}
               </p>
             </div>
@@ -190,39 +190,39 @@ export default async function DesignerDetailPage({ params }: DesignerDetailPageP
       </section>
 
       {/* 구분선 (모바일에서 숨김) */}
-      <div className="container mx-auto px-[30px]">
-        <div className="h-[12px] bg-black hidden md:block" />
+      <div className="container mx-auto px-[30px] mt-4 min-[900px]:mt-4 lg:mt-1 xl:mt-0">
+        <div className="h-[12px] bg-black hidden min-[900px]:block" />
       </div>
 
       {/* interview */}
       <section id="interview" className="container mx-auto px-[30px] py-10">
-        <h2 className="text-2xl md:text-3xl font-normal mb-8">Interview</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12">
+        <h2 className="text-2xl min-[900px]:text-3xl font-normal mb-8">Interview</h2>
+        <div className="grid grid-cols-1 min-[900px]:grid-cols-2 gap-10 min-[900px]:gap-12">
           <div>
             <div className="mb-3">
               <span className="inline-flex items-center px-2 py-0.5 -rotate-1" style={{ background: '#DDFF8E', border: '1px solid #000' }}>[ 1 ]</span>
             </div>
-            <h3 className="text-lg md:text-xl font-normal mb-3">4년동안 디자인 전공을 하며 생긴 새로운 습관이나 태도가 있다면 무엇인가요?</h3>
-            <p className="pretendard-font text-gray-700 leading-relaxed break-keep whitespace-pre-line max-w-[68ch] md:max-w-[72ch]" style={{ wordBreak: 'keep-all' }}>{formatBio(designer.interview1)}</p>
+            <h3 className="text-lg min-[900px]:text-xl font-normal mb-3">4년동안 디자인 전공을 하며 생긴 새로운 습관이나 태도가 있다면 무엇인가요?</h3>
+            <p className="pretendard-font text-gray-700 leading-relaxed break-keep whitespace-pre-line max-w-[68ch] min-[900px]:max-w-[72ch]" style={{ wordBreak: 'keep-all' }}>{formatBio(designer.interview1)}</p>
           </div>
           <div>
             <div className="mb-3">
               <span className="inline-flex items-center px-2 py-0.5 -rotate-1" style={{ background: '#DDFF8E', border: '1px solid #000' }}>[ 2 ]</span>
             </div>
-            <h3 className="text-lg md:text-xl font-normal mb-3">졸업 작품 작업을 하면서 가장 고민했던 점이나 기억에 남는 순간이 있다면 무엇인가요?</h3>
-            <p className="pretendard-font text-gray-700 leading-relaxed break-keep whitespace-pre-line max-w-[68ch] md:max-w-[72ch]" style={{ wordBreak: 'keep-all' }}>{formatBio(designer.interview2)}</p>
+            <h3 className="text-lg min-[900px]:text-xl font-normal mb-3">졸업 작품 작업을 하면서 가장 고민했던 점이나 기억에 남는 순간이 있다면 무엇인가요?</h3>
+            <p className="pretendard-font text-gray-700 leading-relaxed break-keep whitespace-pre-line max-w-[68ch] min-[900px]:max-w-[72ch]" style={{ wordBreak: 'keep-all' }}>{formatBio(designer.interview2)}</p>
           </div>
         </div>
       </section>
 
       {/* 구분선 (모바일에서 숨김) */}
-      <div className="container mx-auto px-[30px]"><div className="h-[12px] bg-black hidden md:block" /></div>
+      <div className="container mx-auto px-[30px]"><div className="h-[12px] bg-black hidden min-[900px]:block" /></div>
 
       {/* projects */}
       <section id="projects" className="py-10">
         <div className="container mx-auto px-[30px]">
-          <h2 className="text-2xl md:text-3xl font-normal mb-8">Project</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
+          <h2 className="text-2xl min-[900px]:text-3xl font-normal mb-8">Project</h2>
+          <div className="grid grid-cols-1 min-[900px]:grid-cols-2 gap-8 min-[900px]:gap-10">
             {(() => {
               const all = getWorksByUserId(designer.id)
               const conv = all.find(w => w.category === '융합디자인스튜디오')

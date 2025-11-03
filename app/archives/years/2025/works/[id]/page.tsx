@@ -39,14 +39,14 @@ export default function WorkDetailPage({ params }: WorkDetailPageProps) {
       <div className="container mx-auto px-6 py-10">
         <div className="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-[minmax(0,720px)_minmax(0,1fr)] gap-10">
           {/* Left: main visual */}
-          <div>
+          <div className="order-2 lg:order-1">
             <div className="w-full bg-[repeating-linear-gradient(45deg,#efefef_0,#efefef_24px,#f8f8f8_24px,#f8f8f8_48px)] border border-gray-200 min-h-[720px]" />
             {/* Video placeholder */}
             <div className="mt-10 w-full h-[220px] bg-gray-200 border border-gray-200" />
           </div>
 
           {/* Right: meta and description */}
-          <aside className="lg:pl-2">
+          <aside className="order-1 lg:order-2 lg:pl-2 mb-10 lg:mb-0">
             <Link href="/archives/years/2025/works" className="text-gray-600 hover:text-black inline-flex items-center mb-6">
               <Image src="/images/works/arrow.svg" alt="" width={16} height={16} className="mr-2" />
               <span className="rix-font text-[16px]">뒤로가기</span>
@@ -56,12 +56,10 @@ export default function WorkDetailPage({ params }: WorkDetailPageProps) {
               {designer.name}
               {roman ? <span className="ml-2 text-[#D5B27D] font-bold">{roman}</span> : null}
             </div>
-            <p className="pretendard-font text-[18px] font-medium leading-6 text-gray-700 whitespace-pre-line mb-6">
+            <p className="work-description pretendard-font text-[18px] font-medium leading-7 text-gray-700 mb-6">
               {work.description}
             </p>
-            <div className="pretendard-font text-[18px] font-bold text-gray-700">
-              {work.category} | {work.professor}
-            </div>
+            <div className="pretendard-font text-[18px] font-bold text-gray-700">{work.category}</div>
           </aside>
         </div>
 
@@ -73,7 +71,9 @@ export default function WorkDetailPage({ params }: WorkDetailPageProps) {
               <Link key={r.id} href={`/archives/years/2025/works/${r.id}`} className="block group">
                 <div className="aspect-[4/3] w-full bg-[repeating-linear-gradient(45deg,#efefef_0,#efefef_24px,#f8f8f8_24px,#f8f8f8_48px)]" />
                 <div className="mt-3 pretendard-font font-bold text-[14px] text-gray-900">{r.title}</div>
-                <div className="pretendard-font text-[12px] text-[#8b8b8b]">{designers.find(d => d.id === r.userId)?.name || ''}</div>
+                <div className="pretendard-font text-[12px] text-[#8b8b8b]">
+                  {designers.find(d => d.id === r.userId)?.name || ''}
+                </div>
               </Link>
             ))}
           </div>
