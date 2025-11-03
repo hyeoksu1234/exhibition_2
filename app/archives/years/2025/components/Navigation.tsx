@@ -5,8 +5,12 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 export default function Navigation() {
-  const pathname = usePathname()
+  const pathname = usePathname() ?? '/'
   const [open, setOpen] = useState(false)
+  const isHome = pathname === '/archives/years/2025' || pathname === '/'
+  const isWorks = pathname.startsWith('/archives/years/2025/works')
+  const isDesigners = pathname.startsWith('/archives/years/2025/designers')
+  const isArchive = pathname.startsWith('/archives/years/2025/archive')
 
   useEffect(() => {
     // lock body scroll when menu is open
@@ -32,7 +36,7 @@ export default function Navigation() {
         <Link 
           href="/archives/years/2025" 
           className={`flex items-center justify-center text-black transform -rotate-2 px-0.5 xxs:px-1 xs:px-2 sm:px-3 md:px-4 lg:px-5 py-1 xxs:py-1 xs:py-2 md:py-3 lg:py-4 no-underline transition-colors duration-200 whitespace-nowrap rounded-none overflow-visible ${
-            (pathname === '/archives/years/2025' || pathname === '/') ? 'bg-[#B5EEFF]' : 'bg-[#DFDFDF]'
+            isHome ? 'bg-[#B5EEFF]' : 'bg-[#DFDFDF]'
           } hover:bg-[#DDFF8E]`}
           style={{
             fontFamily: '"rixdongnimgothic-pro", sans-serif',
@@ -47,7 +51,7 @@ export default function Navigation() {
         <Link 
           href="/archives/years/2025/works" 
           className={`flex items-center justify-center text-black transform rotate-2 px-0.5 xxs:px-1 xs:px-2 sm:px-3 md:px-4 lg:px-5 py-1 xxs:py-1 xs:py-2 md:py-3 lg:py-4 no-underline transition-colors duration-200 whitespace-nowrap rounded-none overflow-visible ${
-            pathname === '/archives/years/2025/works' ? 'bg-[#B5EEFF]' : 'bg-[#DFDFDF]'
+            isWorks ? 'bg-[#B5EEFF]' : 'bg-[#DFDFDF]'
           } hover:bg-[#DDFF8E]`}
           style={{
             fontFamily: '"rixdongnimgothic-pro", sans-serif',
@@ -62,7 +66,7 @@ export default function Navigation() {
         <Link 
           href="/archives/years/2025/designers" 
           className={`flex items-center justify-center text-black transform -rotate-2 px-0.5 xxs:px-1 xs:px-2 sm:px-3 md:px-4 lg:px-5 py-1 xxs:py-1 xs:py-2 md:py-3 lg:py-4 no-underline transition-colors duration-200 whitespace-nowrap rounded-none overflow-visible ${
-            pathname === '/archives/years/2025/designers' ? 'bg-[#B5EEFF]' : 'bg-[#DFDFDF]'
+            isDesigners ? 'bg-[#B5EEFF]' : 'bg-[#DFDFDF]'
           } hover:bg-[#DDFF8E]`}
           style={{
             fontFamily: '"rixdongnimgothic-pro", sans-serif',
@@ -77,7 +81,7 @@ export default function Navigation() {
         <Link 
           href="/archives/years/2025/archive" 
           className={`flex items-center justify-center text-black transform rotate-2 px-0.5 xxs:px-1 xs:px-2 sm:px-3 md:px-4 lg:px-5 py-1 xxs:py-1 xs:py-2 md:py-3 lg:py-4 no-underline transition-colors duration-200 whitespace-nowrap rounded-none overflow-visible ${
-            pathname === '/archives/years/2025/archive' ? 'bg-[#B5EEFF]' : 'bg-[#DFDFDF]'
+            isArchive ? 'bg-[#B5EEFF]' : 'bg-[#DFDFDF]'
           } hover:bg-[#DDFF8E]`}
           style={{
             fontFamily: '"rixdongnimgothic-pro", sans-serif',
@@ -91,7 +95,7 @@ export default function Navigation() {
         </Link>
       </div>
 
-      {/* Hamburger for <=390px */}
+      {/* Hamburger for <=600px */}
       <button
         type="button"
         aria-label="Open menu"
@@ -106,28 +110,28 @@ export default function Navigation() {
         <span className="bar bottom" />
       </button>
 
-      {/* Mobile overlay menu (<=390px) */}
+      {/* Mobile overlay menu (<=600px) */}
       {open && (
         <div id="mobile-menu" className="nav-overlay open">
           <div className="nav-panel">
             <ul className="nav-list">
               <li>
-                <Link href="/archives/years/2025" onClick={() => setOpen(false)} className={(pathname === '/archives/years/2025' || pathname === '/') ? 'active' : ''}>
+                <Link href="/archives/years/2025" onClick={() => setOpen(false)} className={isHome ? 'active' : ''}>
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/archives/years/2025/works" onClick={() => setOpen(false)} className={pathname === '/archives/years/2025/works' ? 'active' : ''}>
+                <Link href="/archives/years/2025/works" onClick={() => setOpen(false)} className={isWorks ? 'active' : ''}>
                   Works
                 </Link>
               </li>
               <li>
-                <Link href="/archives/years/2025/designers" onClick={() => setOpen(false)} className={pathname === '/archives/years/2025/designers' ? 'active' : ''}>
+                <Link href="/archives/years/2025/designers" onClick={() => setOpen(false)} className={isDesigners ? 'active' : ''}>
                   Designer
                 </Link>
               </li>
               <li>
-                <Link href="/archives/years/2025/archive" onClick={() => setOpen(false)} className={pathname === '/archives/years/2025/archive' ? 'active' : ''}>
+                <Link href="/archives/years/2025/archive" onClick={() => setOpen(false)} className={isArchive ? 'active' : ''}>
                   Archive
                 </Link>
               </li>
