@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Footer from "../components/Footer";
 import { works as allWorks } from "@/app/lib/data/works";
 import { designers as allDesigners } from "@/app/lib/data/designers";
@@ -76,9 +77,32 @@ const STUDIOS: Record<StudioKey, { label: string; en: string; icon: string; desc
 };
 
 export default function WorksPage() {
-  const [active, setActive] = useState<StudioKey>("convergence");
+  const searchParams = useSearchParams();
+  const studioParam = searchParams.get("studio");
+  const [active, setActive] = useState<StudioKey>(studioParam === "innovation" ? "innovation" : "convergence");
   const [profFilter, setProfFilter] = useState<string>("전체");
   const daySeed = Math.floor(Date.now() / 86_400_000);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const next = studioParam === "innovation" ? "innovation" : "convergence";
+    setActive((prev) => {
+      if (prev !== next) {
+        setProfFilter("전체");
+        return next;
+      }
+      return prev;
+    });
+  }, [studioParam]);
+
+  useEffect(() => {
+    const desiredQuery = active === "innovation" ? "?studio=innovation" : "";
+    const currentQuery = studioParam === "innovation" ? "?studio=innovation" : "";
+    if (desiredQuery !== currentQuery) {
+      router.replace(`${pathname}${desiredQuery}`, { scroll: false });
+    }
+  }, [active, studioParam, router, pathname]);
 
   // userId -> 디자이너 이름 매핑
   const nameById = useMemo(() => {

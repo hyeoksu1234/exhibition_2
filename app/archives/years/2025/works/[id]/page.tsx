@@ -15,6 +15,8 @@ export default function WorkDetailPage({ params }: WorkDetailPageProps) {
   const workId = parseInt(params.id)
   const work = works.find(w => w.id === workId)
   const designer = work ? designers.find(d => d.id === work.userId) : undefined
+  const studioKey = work?.category === '혁신디자인스튜디오' ? 'innovation' : 'convergence'
+  const worksListHref = `/archives/years/2025/works${studioKey === 'innovation' ? '?studio=innovation' : ''}`
 
   if (!work || !designer) {
     return (
@@ -22,7 +24,7 @@ export default function WorkDetailPage({ params }: WorkDetailPageProps) {
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">작품을 찾을 수 없습니다</h2>
           <p className="text-gray-600 mb-8">요청하신 작품 정보를 찾을 수 없습니다.</p>
-          <Link href="/archives/years/2025/works" className="px-6 py-3 bg-primary-800 text-white rounded-lg hover:bg-primary-700">
+          <Link href={worksListHref} className="px-6 py-3 bg-primary-800 text-white rounded-lg hover:bg-primary-700">
             작품 목록으로 돌아가기
           </Link>
         </div>
@@ -47,7 +49,7 @@ export default function WorkDetailPage({ params }: WorkDetailPageProps) {
 
           {/* Right: meta and description */}
           <aside className="order-1 lg:order-2 lg:pl-2 mb-10 lg:mb-0">
-            <Link href="/archives/years/2025/works" className="text-gray-600 hover:text-black inline-flex items-center mb-6">
+            <Link href={worksListHref} className="text-gray-600 hover:text-black inline-flex items-center mb-6">
               <Image src="/images/works/arrow.svg" alt="" width={16} height={16} className="mr-2" />
               <span className="rix-font text-[16px]">뒤로가기</span>
             </Link>
