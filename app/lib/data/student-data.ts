@@ -1,3 +1,5 @@
+import { profileImageManifest, type ProfileImageMeta } from './profile-image-manifest'
+
 // 실제 학생 데이터
 export const realStudentData = [
   { name: '강규리', studentNumber: '202120194', phone: '010 7167 4120', email: 'kyuri1414@naver.com' },
@@ -213,11 +215,31 @@ export const photoFileByStudentNumber: Record<string, string> = {
   '202120221': '김민지_2.jpg',
 };
 
-// 퍼블릭 이미지 경로 생성 (맥에서 커밋된 NFD 파일명을 그대로 사용)
-export function buildProfileImageSrc(studentNumber: string | undefined, fallbackName: string): string {
+const DEFAULT_PROFILE_PLACEHOLDER = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+PHJlY3Qgd2lkdGg9JzEwMCUnIGhlaWdodD0nMTAwJScgZmlsbD0nJTIzZjNmM2YzJy8+PC9zdmc+'
+
+const DEFAULT_PROFILE_META: ProfileImageMeta = {
+  src: '/images/profiles/Group 1073.png',
+  width: 400,
+  height: 524,
+  blurDataURL: DEFAULT_PROFILE_PLACEHOLDER,
+}
+
+export function getProfileImageMeta(studentNumber: string | undefined, fallbackName: string): ProfileImageMeta {
   const candidate = photoFileByStudentNumber[studentNumber ?? ''] || `${fallbackName}.jpg`
   const normalized = candidate.normalize('NFD')
-  return `/images/profiles/images/${encodeURIComponent(normalized)}`
+  const manifestEntry = profileImageManifest[normalized]
+  if (manifestEntry) {
+    return { ...manifestEntry }
+  }
+  return {
+    ...DEFAULT_PROFILE_META,
+    src: `/images/profiles/images/${encodeURIComponent(normalized)}`,
+  }
+}
+
+// 퍼블릭 이미지 경로 생성 (맥에서 커밋된 NFD 파일명을 그대로 사용)
+export function buildProfileImageSrc(studentNumber: string | undefined, fallbackName: string): string {
+  return getProfileImageMeta(studentNumber, fallbackName).src
 }
 
 // 인스타그램 핸들(이름 기준, 중복 이름은 배열 순서대로 매칭)

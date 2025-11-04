@@ -2,7 +2,8 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link'
-import { realStudentData, englishNameByStudentNumber, buildProfileImageSrc } from '@/app/lib/data/student-data'
+import Image from 'next/image'
+import { realStudentData, englishNameByStudentNumber, getProfileImageMeta } from '@/app/lib/data/student-data'
 import Footer from '../components/Footer'
 import { generateDesigners } from '@/app/lib/data/designers'
 
@@ -119,25 +120,30 @@ export default function DesignersPage() {
         {/* 그리드 */}
         {filteredUsers.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-[10px] gap-y-[10px] sm:gap-x-6 sm:gap-y-12">
-            {filteredUsers.map(designer => (
-              <Link key={designer.id} href={`/archives/years/2025/designers/${designer.id}`} className="block group w-full sm:w-[210px] mx-auto">
-                <div className="relative overflow-hidden border border-gray-200 w-full aspect-[210/256] sm:w-[210px] sm:h-[256px] sm:aspect-auto">
-                  <img
-                    src={buildProfileImageSrc(designer.student_number, designer.name)}
-                    alt={`${designer.name} 사진`}
-                    className="absolute inset-0 w-full h-full object-cover"
-                    onError={(e) => {
-                      const t = e.currentTarget as HTMLImageElement
-                      t.src = '/images/profiles/Group 1073.png'
-                    }}
-                  />
-                </div>
-                <div className="mt-3 h-[48px] flex flex-col justify-start">
-                  <div className="pretendard-font text-black font-bold text-[20px] leading-tight">{designer.name}</div>
-                  <div className="pretendard-font text-[#3D3D3D] font-bold text-[14px] leading-snug">{englishNameByStudentNumber[designer.student_number ?? ''] || romanizeKorean(designer.name)}</div>
-                </div>
-              </Link>
-            ))}
+            {filteredUsers.map((designer, index) => {
+              const profileImage = getProfileImageMeta(designer.student_number, designer.name)
+              return (
+                <Link key={designer.id} href={`/archives/years/2025/designers/${designer.id}`} className="block group w-full sm:w-[210px] mx-auto">
+                  <div className="relative overflow-hidden border border-gray-200 w-full aspect-[210/256] sm:w-[210px] sm:h-[256px] sm:aspect-auto bg-[#f6f6f6]">
+                    <Image
+                      src={profileImage.src}
+                      alt={`${designer.name} 사진`}
+                      fill
+                      sizes="(max-width: 640px) 45vw, (max-width: 1024px) 28vw, 210px"
+                      className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                      placeholder="blur"
+                      blurDataURL={profileImage.blurDataURL}
+                      priority={index < 8}
+                      quality={85}
+                    />
+                  </div>
+                  <div className="mt-3 h-[48px] flex flex-col justify-start">
+                    <div className="pretendard-font text-black font-bold text-[20px] leading-tight">{designer.name}</div>
+                    <div className="pretendard-font text-[#3D3D3D] font-bold text-[14px] leading-snug">{englishNameByStudentNumber[designer.student_number ?? ''] || romanizeKorean(designer.name)}</div>
+                  </div>
+                </Link>
+              )
+            })}
           </div>
         ) : (
           <div className="text-center py-16 text-gray-500">검색 결과가 없습니다</div>

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { getDesignerById } from '@/app/lib/data/designers'
-import { englishNameByStudentNumber, buildProfileImageSrc } from '@/app/lib/data/student-data'
+import { englishNameByStudentNumber, getProfileImageMeta } from '@/app/lib/data/student-data'
 import { getWorksByUserId } from '@/app/lib/data/works'
 import type { Work } from '@/app/lib/types'
 
@@ -66,6 +66,7 @@ interface DesignerDetailPageProps {
 export default async function DesignerDetailPage({ params }: DesignerDetailPageProps) {
   const designerId = parseInt(params.id)
   const designer = getDesignerById(designerId)
+  const profileImage = designer ? getProfileImageMeta(designer.student_number, designer.name) : null
 
   if (!designer) {
     return (
@@ -113,14 +114,19 @@ export default async function DesignerDetailPage({ params }: DesignerDetailPageP
               </div>
             </div>
             {/* 왼쪽: 학생 사진 (이름 기반) */}
-            <div className="relative overflow-hidden border border-gray-200 w-[302px] h-[370px] mx-auto min-[900px]:mx-0 min-[900px]:mt-[20px]">
-              <Image
-                src={buildProfileImageSrc(designer.student_number, designer.name)}
-                alt={`${designer.name} 사진`}
-                fill
-                sizes="(min-width: 900px) 302px, 50vw"
-                className="object-cover"
-              />
+            <div className="relative overflow-hidden border border-gray-200 w-[302px] h-[370px] mx-auto min-[900px]:mx-0 min-[900px]:mt-[20px] bg-[#f6f6f6]">
+              {profileImage && (
+                <Image
+                  src={profileImage.src}
+                  alt={`${designer.name} 사진`}
+                  fill
+                  priority
+                  sizes="(min-width: 900px) 302px, 50vw"
+                  className="object-cover"
+                  placeholder="blur"
+                  blurDataURL={profileImage.blurDataURL}
+                />
+              )}
             </div>
             {/* 우측 정보 */}
             <div className="min-[900px]:h-[370px] flex flex-col justify-start">

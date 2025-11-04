@@ -17,6 +17,10 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
+        <link rel="preconnect" href="https://use.typekit.net" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://p.typekit.net" crossOrigin="anonymous" />
+        <link rel="preload" href="https://use.typekit.net/yvm1rwe.css" as="style" />
+        <link rel="stylesheet" href="https://use.typekit.net/yvm1rwe.css" />
         <script dangerouslySetInnerHTML={{
           __html: `
             (function(d) {
