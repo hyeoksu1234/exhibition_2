@@ -32,7 +32,8 @@ function mapDesigner(row: SupabaseDesignerRow): Designer {
       ? [row.studio]
       : []
   const normalizedStudios = Array.from(new Set<StudioKey>(studiosRaw))
-  const studios = normalizedStudios.length > 1 ? normalizedStudios : ['혁신디자인스튜디오', '융합디자인스튜디오']
+  const defaultStudios: StudioKey[] = ['혁신디자인스튜디오', '융합디자인스튜디오']
+  const studios: StudioKey[] = normalizedStudios.length > 1 ? normalizedStudios : defaultStudios
 
   return {
     id: row.id,
