@@ -1,4 +1,5 @@
 import { profileImageManifest, type ProfileImageMeta } from './profile-image-manifest'
+import { resolveAssetUrl } from '../utils/asset-url'
 
 // 실제 학생 데이터
 export const realStudentData = [
@@ -229,11 +230,14 @@ export function getProfileImageMeta(studentNumber: string | undefined, fallbackN
   const normalized = candidate.normalize('NFD')
   const manifestEntry = profileImageManifest[normalized]
   if (manifestEntry) {
-    return { ...manifestEntry }
+    return {
+      ...manifestEntry,
+      src: resolveAssetUrl(manifestEntry.src),
+    }
   }
   return {
     ...DEFAULT_PROFILE_META,
-    src: `/images/profiles/images/${encodeURIComponent(normalized)}`,
+    src: resolveAssetUrl(`/images/profiles/images/${encodeURIComponent(normalized)}`),
   }
 }
 

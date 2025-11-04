@@ -5,6 +5,9 @@ export interface Designer {
   major: string;
   studio: '혁신디자인스튜디오' | '융합디자인스튜디오';
   profile_image: string;
+  profile_blur_data_url?: string;
+  profile_width?: number;
+  profile_height?: number;
   bio: string;
   email: string;
   instagram?: string;

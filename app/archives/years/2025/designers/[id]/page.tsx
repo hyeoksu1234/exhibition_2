@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { getDesignerById } from '@/app/lib/data/designers'
 import { englishNameByStudentNumber, getProfileImageMeta } from '@/app/lib/data/student-data'
 import { getWorksByUserId } from '@/app/lib/data/works'
 import type { Work } from '@/app/lib/types'
+import { fetchDesignerById } from '@/app/lib/services/designers'
 
 // 간단 로마자 변환(표시용)
 function romanizeKorean(str: string): string {
@@ -65,8 +65,17 @@ interface DesignerDetailPageProps {
 
 export default async function DesignerDetailPage({ params }: DesignerDetailPageProps) {
   const designerId = parseInt(params.id)
-  const designer = getDesignerById(designerId)
-  const profileImage = designer ? getProfileImageMeta(designer.student_number, designer.name) : null
+  const designer = await fetchDesignerById(designerId)
+
+  const profileImage = designer
+    ? (() => {
+        const fallbackMeta = getProfileImageMeta(designer.student_number, designer.name)
+        return {
+          src: designer.profile_image || fallbackMeta.src,
+          blurDataURL: designer.profile_blur_data_url || fallbackMeta.blurDataURL,
+        }
+      })()
+    : null
 
   if (!designer) {
     return (
@@ -123,7 +132,7 @@ export default async function DesignerDetailPage({ params }: DesignerDetailPageP
                   priority
                   sizes="(min-width: 900px) 302px, 50vw"
                   className="object-cover"
-                  placeholder="blur"
+                  placeholder={profileImage.blurDataURL ? 'blur' : 'empty'}
                   blurDataURL={profileImage.blurDataURL}
                 />
               )}
