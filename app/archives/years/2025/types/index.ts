@@ -27,7 +27,7 @@ export interface Designer {
   id: number
   name: string
   major: string
-  studio: string
+  studios: string[]
   profile_image: string
   interview1?: string
   interview2?: string

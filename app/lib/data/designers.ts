@@ -1,4 +1,4 @@
-import { Designer } from '../types';
+import { Designer, StudioKey } from '../types';
 import { realStudentData as studentData, instagramHandlesByName, emailByName, bioByName, interview1ByName, interview2ByName } from './student-data';
 
 // 실제 학생 데이터는 student-data.ts에서 import
@@ -154,7 +154,6 @@ export function generateDesigners(inputStudentData?: any[]): Designer[] {
   const dataToUse = inputStudentData || studentData;
   const nameSeen: Record<string, number> = {};
   return dataToUse.map((student, index) => {
-    const studio = index % 2 === 0 ? '융합디자인스튜디오' : '혁신디자인스튜디오';
     const seq = (nameSeen[student.name] = (nameSeen[student.name] || 0));
     const instagram = getInstagramFromMapping(student.name, seq);
     nameSeen[student.name] = seq + 1;
@@ -186,7 +185,7 @@ export function generateDesigners(inputStudentData?: any[]): Designer[] {
       id: index + 1,
       name: student.name,
       major: '커뮤니케이션디자인',
-      studio: studio,
+      studios: ['혁신디자인스튜디오', '융합디자인스튜디오'],
       profile_image: `/images/profiles/user-${index + 1}.jpg`,
       bio,
       email,
@@ -208,8 +207,8 @@ export function getDesignerById(id: number): Designer | undefined {
 }
 
 // 스튜디오별 디자이너 찾기
-export function getDesignersByStudio(studio: '혁신디자인스튜디오' | '융합디자인스튜디오'): Designer[] {
-  return designers.filter(designer => designer.studio === studio);
+export function getDesignersByStudio(studio: StudioKey): Designer[] {
+  return designers.filter(designer => designer.studios.includes(studio));
 }
 
 // 이름으로 디자이너 검색

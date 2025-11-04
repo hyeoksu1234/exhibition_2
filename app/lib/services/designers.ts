@@ -1,13 +1,14 @@
 import { getSupabaseServerClient } from '@/app/lib/supabase/server'
 import { resolveAssetUrl } from '@/app/lib/utils/asset-url'
-import type { Designer } from '@/app/lib/types'
+import type { Designer, StudioKey } from '@/app/lib/types'
 import { designers as fallbackDesigners } from '@/app/lib/data/designers'
 
 type SupabaseDesignerRow = {
   id: number
   name: string
   major: string | null
-  studio: '혁신디자인스튜디오' | '융합디자인스튜디오'
+  studio: StudioKey | null
+  studios?: StudioKey[] | null
   profile_image: string | null
   profile_blur_data_url?: string | null
   profile_width?: number | null
@@ -25,11 +26,19 @@ const DESIGNER_SELECT =
   'id,name,major,studio,profile_image,profile_blur_data_url,profile_width,profile_height,bio,email,instagram,website,interview1,interview2,student_number'
 
 function mapDesigner(row: SupabaseDesignerRow): Designer {
+  const studiosRaw = Array.isArray(row.studios)
+    ? (row.studios.filter(Boolean) as StudioKey[])
+    : row.studio
+      ? [row.studio]
+      : []
+  const normalizedStudios = Array.from(new Set(studiosRaw))
+  const studios = normalizedStudios.length > 1 ? normalizedStudios : ['혁신디자인스튜디오', '융합디자인스튜디오']
+
   return {
     id: row.id,
     name: row.name,
     major: row.major || '커뮤니케이션디자인',
-    studio: row.studio,
+    studios,
     profile_image: resolveAssetUrl(row.profile_image || ''),
     profile_blur_data_url: row.profile_blur_data_url || undefined,
     profile_width: row.profile_width ?? undefined,

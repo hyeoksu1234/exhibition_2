@@ -1,9 +1,11 @@
+export type StudioKey = '혁신디자인스튜디오' | '융합디자인스튜디오'
+
 // 디자이너(학생) 타입 정의
 export interface Designer {
   id: number;
   name: string;
   major: string;
-  studio: '혁신디자인스튜디오' | '융합디자인스튜디오';
+  studios: StudioKey[];
   profile_image: string;
   profile_blur_data_url?: string;
   profile_width?: number;
@@ -24,7 +26,7 @@ export interface Work {
   description: string;
   images: string[];
   thumbnail: string;
-  category: '혁신디자인스튜디오' | '융합디자인스튜디오';
+  category: StudioKey;
   professor: string;
   tags: string[];
   userId: number; // Designer의 id와 연결
@@ -37,7 +39,7 @@ export interface Work {
 export interface Professor {
   id: number;
   name: string;
-  studio: '혁신디자인스튜디오' | '융합디자인스튜디오';
+  studio: StudioKey;
   position?: string;
 }
 

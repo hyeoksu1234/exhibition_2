@@ -70,56 +70,55 @@ export default function DesignersClient({ designers }: DesignersClientProps) {
   return (
     <div className="min-h-screen bg-white">
       <div className="container mx-auto py-10 px-5">
-        <div className="flex flex-col gap-4 mb-8">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex flex-wrap items-center gap-2">
-              {CHO_FILTERS.map(key => (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => setActiveCho(key as any)}
-                  className={[
-                    'h-8 min-w-8 px-2 flex items-center justify-center border text-sm transition-colors',
-                    key === 'ALL'
-                      ? (activeCho === 'ALL'
-                          ? 'bg-[#2F2F2F] border-[#2F2F2F] text-[#DDFF8E]'
-                          : 'bg-white border-[#E5E5E5] text-[#9F9F9F]')
-                      : (activeCho === key
-                          ? 'bg-[#2F2F2F] border-[#2F2F2F] text-white'
-                          : 'bg-white border-[#E5E5E5] text-[#9F9F9F]')
-                  ].join(' ')}
-                  style={{ fontFamily: 'rixdongnimgothic-pro, sans-serif', fontWeight: 400 }}
-                >
-                  {key === 'ALL' ? 'All' : key}
-                </button>
-              ))}
+        <div className="flex flex-col gap-6 mb-8">
+          <div className="flex flex-wrap items-end gap-3">
+            <div className="flex flex-col flex-1 min-w-[220px] max-w-full sm:max-w-sm">
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="디자이너 이름 검색"
+                className="w-full bg-transparent placeholder-[#C9C9C9] text-[#4B4B4B] text-[18px] font-medium focus:outline-none"
+                style={{ fontFamily: 'Pretendard, sans-serif' }}
+              />
+              <div className="mt-1 h-[4px] bg-[#333333]" />
             </div>
-            <div className="flex items-end gap-6 whitespace-nowrap">
-              <div className="flex flex-col">
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="디자이너 이름 검색"
-                  className="w-64 bg-transparent placeholder-[#C9C9C9] text-[#4B4B4B] text-[18px] font-medium focus:outline-none"
-                  style={{ fontFamily: 'Pretendard, sans-serif' }}
-                />
-                <div className="mt-1 h-[4px] bg-[#333333]" />
-              </div>
+            <button
+              type="button"
+              onClick={() => null}
+              className="px-5 py-2 bg-[#E5E5E5] text-black font-extrabold text-sm"
+              style={{ transform: 'rotate(-2deg)' }}
+            >
+              검색
+            </button>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            {CHO_FILTERS.map(key => (
               <button
+                key={key}
                 type="button"
-                onClick={() => null}
-                className="px-5 py-2 bg-[#E5E5E5] text-black font-extrabold text-sm"
-                style={{ transform: 'rotate(-2deg)' }}
+                onClick={() => setActiveCho(key as any)}
+                className={[
+                  'h-8 min-w-8 px-2 flex items-center justify-center border text-sm transition-colors',
+                  key === 'ALL'
+                    ? (activeCho === 'ALL'
+                        ? 'bg-[#2F2F2F] border-[#2F2F2F] text-[#DDFF8E]'
+                        : 'bg-white border-[#E5E5E5] text-[#9F9F9F]')
+                    : (activeCho === key
+                        ? 'bg-[#2F2F2F] border-[#2F2F2F] text-white'
+                        : 'bg-white border-[#E5E5E5] text-[#9F9F9F]')
+                ].join(' ')}
+                style={{ fontFamily: 'rixdongnimgothic-pro, sans-serif', fontWeight: 400 }}
               >
-                검색
+                {key === 'ALL' ? 'All' : key}
               </button>
-            </div>
+            ))}
           </div>
         </div>
 
         {filteredUsers.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-[10px] gap-y-[10px] sm:gap-x-6 sm:gap-y-12">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 sm:gap-x-6 sm:gap-y-12">
             {filteredUsers.map((designer, index) => {
               const fallbackMeta = getProfileImageMeta(designer.student_number, designer.name)
               const meta = {
@@ -130,8 +129,8 @@ export default function DesignersClient({ designers }: DesignersClientProps) {
               }
 
               return (
-                <Link key={designer.id} href={`/archives/years/2025/designers/${designer.id}`} className="block group w-full sm:w-[210px] mx-auto">
-                  <div className="relative overflow-hidden border border-gray-200 w-full aspect-[210/256] sm:w-[210px] sm:h-[256px] sm:aspect-auto bg-[#f6f6f6]">
+                <Link key={designer.id} href={`/archives/years/2025/designers/${designer.id}`} className="block group w-full">
+                  <div className="relative overflow-hidden border border-gray-200 w-full aspect-[210/256] bg-[#f6f6f6]">
                     <Image
                       src={meta.src}
                       alt={`${designer.name} 사진`}

@@ -4,15 +4,27 @@ export * from './works';
 export * from './exhibition';
 
 // 통계 정보
-import { designers } from './designers';
-import { works } from './works';
+import { designers } from './designers'
+import { works } from './works'
+
+const innovationDesignerIds = new Set<number>()
+const convergenceDesignerIds = new Set<number>()
+
+works.forEach((work) => {
+  if (work.category === '혁신디자인스튜디오') {
+    innovationDesignerIds.add(work.userId)
+  }
+  if (work.category === '융합디자인스튜디오') {
+    convergenceDesignerIds.add(work.userId)
+  }
+})
 
 export const statistics = {
   totalDesigners: designers.length,
   totalWorks: works.length,
   designersByStudio: {
-    innovation: designers.filter(d => d.studio === '혁신디자인스튜디오').length,
-    convergence: designers.filter(d => d.studio === '융합디자인스튜디오').length
+    innovation: innovationDesignerIds.size,
+    convergence: convergenceDesignerIds.size,
   },
   worksByCategory: {
     innovation: works.filter(w => w.category === '혁신디자인스튜디오').length,
