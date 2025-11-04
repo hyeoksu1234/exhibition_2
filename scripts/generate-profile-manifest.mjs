@@ -3,10 +3,13 @@ import path from 'path'
 import sharp from 'sharp'
 import { fileURLToPath } from 'url'
 import { S3Client, ListObjectsV2Command, GetObjectCommand } from '@aws-sdk/client-s3'
+import dotenv from 'dotenv'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const projectRoot = path.resolve(__dirname, '..')
+
+dotenv.config({ path: path.join(projectRoot, '.env.local') })
 
 const outputPath = path.join(projectRoot, 'app', 'lib', 'data', 'profile-image-manifest.ts')
 
