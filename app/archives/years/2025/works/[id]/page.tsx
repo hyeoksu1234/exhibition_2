@@ -4,6 +4,33 @@ import { works } from '@/app/lib/data/works'
 import { designers } from '@/app/lib/data/designers'
 import { englishNameByStudentNumber } from '@/app/lib/data/student-data'
 
+function seededRandom(seed: number): () => number {
+  let value = seed % 2147483647
+  if (value <= 0) value += 2147483646
+  return () => {
+    value = (value * 16807) % 2147483647
+    return (value - 1) / 2147483646
+  }
+}
+
+function shuffleWithSeed<T>(items: T[], seed: number): T[] {
+  const random = seededRandom(seed)
+  const result = [...items]
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1))
+    ;[result[i], result[j]] = [result[j], result[i]]
+  }
+  return result
+}
+
+function hashString(input: string): number {
+  let hash = 0
+  for (let i = 0; i < input.length; i++) {
+    hash = (hash * 31 + input.charCodeAt(i)) >>> 0
+  }
+  return hash
+}
+
 // 페이지 매개변수 타입
 interface WorkDetailPageProps {
   params: {
@@ -17,6 +44,31 @@ export default function WorkDetailPage({ params }: WorkDetailPageProps) {
   const designer = work ? designers.find(d => d.id === work.userId) : undefined
   const studioKey = work?.category === '혁신디자인스튜디오' ? 'innovation' : 'convergence'
   const worksListHref = `/archives/years/2025/works${studioKey === 'innovation' ? '?studio=innovation' : ''}`
+
+  const daySeed = Math.floor(Date.now() / 86_400_000)
+  const categorySeed = work ? daySeed + hashString(work.category) : daySeed
+  const sameStudio = work ? works.filter(w => w.category === work.category) : []
+  const shuffledStudio = work ? shuffleWithSeed(sameStudio, categorySeed) : []
+  const currentIndex = work ? shuffledStudio.findIndex(w => w.id === work.id) : -1
+  const targetCount = Math.min(4, Math.max(0, shuffledStudio.length - 1))
+  const offsets = [-1, 1, -2, 2]
+  const related: typeof works = []
+  const used = new Set<number>()
+
+  if (currentIndex >= 0) {
+    for (const offset of offsets) {
+      if (related.length >= targetCount) break
+      const len = shuffledStudio.length
+      if (len === 0) break
+      let idx = (currentIndex + offset) % len
+      if (idx < 0) idx += len
+      if (idx === currentIndex) continue
+      const candidate = shuffledStudio[idx]
+      if (!candidate || used.has(candidate.id)) continue
+      related.push(candidate)
+      used.add(candidate.id)
+    }
+  }
 
   if (!work || !designer) {
     return (
@@ -32,9 +84,6 @@ export default function WorkDetailPage({ params }: WorkDetailPageProps) {
     )
   }
   const roman = designer.student_number ? englishNameByStudentNumber[designer.student_number] : undefined
-
-  // 추천 작품 4개
-  const related = works.filter(w => w.id !== work.id && w.category === work.category).slice(0, 4)
 
   return (
     <div className="min-h-screen bg-white">
@@ -67,13 +116,22 @@ export default function WorkDetailPage({ params }: WorkDetailPageProps) {
 
         {/* Related */}
         <div className="mx-auto max-w-6xl mt-12">
-          <span className="inline-flex items-center px-2 py-0.5 -rotate-1" style={{ background: '#DDFF8E', border: '1px solid #000' }}>다른 작품 둘러보기</span>
+          <span
+            className="inline-flex items-center px-2 py-0.5 -rotate-1"
+            style={{ background: '#DDFF8E', fontSize: '24px' }}
+          >
+            다른 작품 둘러보기
+          </span>
           <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-8">
-            {related.map(r => (
-              <Link key={r.id} href={`/archives/years/2025/works/${r.id}`} className="block group">
+            {related.map((r, idx) => (
+              <Link
+                key={r.id}
+                href={`/archives/years/2025/works/${r.id}`}
+                className={`group block ${idx >= 2 ? 'hidden sm:block' : ''}`}
+              >
                 <div className="aspect-[4/3] w-full bg-[repeating-linear-gradient(45deg,#efefef_0,#efefef_24px,#f8f8f8_24px,#f8f8f8_48px)]" />
-                <div className="mt-3 pretendard-font font-bold text-[14px] text-gray-900">{r.title}</div>
-                <div className="pretendard-font text-[12px] text-[#8b8b8b]">
+                <div className="mt-3 pretendard-font font-bold text-[16px] text-gray-900">{r.title}</div>
+                <div className="pretendard-font font-bold text-[14px] text-[#8b8b8b]">
                   {designers.find(d => d.id === r.userId)?.name || ''}
                 </div>
               </Link>
