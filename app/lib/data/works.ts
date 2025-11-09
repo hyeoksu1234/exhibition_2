@@ -348,6 +348,12 @@ export function generateWorks(inputDesigners: Designer[] = designers): Work[] {
       const providedDetail = isInnovation
         ? designer.innovation_detail_path
         : designer.convergence_detail_path;
+      const providedVideo = isInnovation
+        ? designer.innovation_video_url
+        : designer.convergence_video_url;
+      const providedPrototype = isInnovation
+        ? designer.innovation_prototype_url
+        : designer.convergence_prototype_url;
 
       const images = providedDetail ? [providedDetail] : fallbackImages;
       const thumbnail = providedThumbnail || `/images/works/work-${workId}-thumb.jpg`;
@@ -366,6 +372,8 @@ export function generateWorks(inputDesigners: Designer[] = designers): Work[] {
         projectType,
         tools: toolsOptions[toolsIndex],
         year: 2025,
+        videoUrl: providedVideo || undefined,
+        prototypeUrl: providedPrototype || undefined,
       });
 
       workId++;
