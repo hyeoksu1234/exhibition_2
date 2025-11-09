@@ -311,7 +311,7 @@ export function getProfileImageMeta(studentNumber: string | undefined, fallbackN
   }
   return {
     ...DEFAULT_PROFILE_META,
-    src: resolveAssetUrl(`/images/profiles/images/${encodeURIComponent(normalized)}`),
+    src: resolveAssetUrl(`/images/profiles/${encodeURIComponent(normalized)}`),
   }
 }
 
