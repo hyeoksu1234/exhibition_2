@@ -86,7 +86,7 @@ import {
   { name: '이은솔', studentNumber: '202220330', phone: '010 3319 6087', email: 'leees0903@naver.com' },
   { name: '이은진', studentNumber: '201920265', phone: '010 4841 2287', email: 'catlee74@naver.com' },
   { name: '이정오', studentNumber: '202020319', phone: '010 4424 3439', email: 'wjddh1201@gmail.com' },
-  { name: '이지수', studentNumber: '202140343', phone: '010 3739 9780', email: 'cocu1234@naver.com' },
+  { name: '이지수', studentNumber: '202120343', phone: '010 3739 9780', email: 'cocu1234@naver.com' },
   { name: '이지수', studentNumber: '202120344', phone: '010 3400 3378', email: 'dl239287@gmail.com' },
   { name: '이진영', studentNumber: '202121484', phone: '010 4106 5116', email: 'leejy54231@naver.com' },
   { name: '이채영', studentNumber: '202120347', phone: '010 9755 3989', email: 'tjsdndlcodud1@gmail.com' },
