@@ -1,3 +1,5 @@
+import { cache } from 'react'
+
 import { getSupabaseServerClient } from '@/app/lib/supabase/server'
 import { resolveAssetUrl } from '@/app/lib/utils/asset-url'
 import type { Designer, StudioKey } from '@/app/lib/types'
@@ -21,6 +23,10 @@ type SupabaseDesignerRow = {
   interview1: string | null
   interview2: string | null
   student_number: string | null
+  innovation_thumbnail_path?: string | null
+  innovation_detail_path?: string | null
+  convergence_thumbnail_path?: string | null
+  convergence_detail_path?: string | null
 }
 
 const emailByStudentNumber = realStudentData.reduce<Record<string, string>>((acc, student) => {
@@ -29,7 +35,7 @@ const emailByStudentNumber = realStudentData.reduce<Record<string, string>>((acc
 }, {})
 
 const DESIGNER_SELECT =
-  'id,name,major,studio,profile_image,profile_blur_data_url,profile_width,profile_height,bio,email,instagram,website,interview1,interview2,student_number'
+  'id,name,major,studio,profile_image,profile_blur_data_url,profile_width,profile_height,bio,email,instagram,website,interview1,interview2,student_number,innovation_thumbnail_path,innovation_detail_path,convergence_thumbnail_path,convergence_detail_path'
 
 function mapDesigner(row: SupabaseDesignerRow): Designer {
   const studiosRaw = Array.isArray(row.studios)
@@ -39,7 +45,7 @@ function mapDesigner(row: SupabaseDesignerRow): Designer {
       : []
   const normalizedStudios = Array.from(new Set<StudioKey>(studiosRaw))
   const defaultStudios: StudioKey[] = ['혁신디자인스튜디오', '융합디자인스튜디오']
-  const studios: StudioKey[] = normalizedStudios.length > 1 ? normalizedStudios : defaultStudios
+  const studios: StudioKey[] = normalizedStudios.length ? normalizedStudios : defaultStudios
 
   const normalizedEmail =
     (row.email && row.email.trim()) ||
@@ -62,6 +68,18 @@ function mapDesigner(row: SupabaseDesignerRow): Designer {
     interview1: row.interview1 || '',
     interview2: row.interview2 || '',
     student_number: row.student_number || undefined,
+    innovation_thumbnail_path: row.innovation_thumbnail_path
+      ? resolveAssetUrl(row.innovation_thumbnail_path)
+      : undefined,
+    innovation_detail_path: row.innovation_detail_path
+      ? resolveAssetUrl(row.innovation_detail_path)
+      : undefined,
+    convergence_thumbnail_path: row.convergence_thumbnail_path
+      ? resolveAssetUrl(row.convergence_thumbnail_path)
+      : undefined,
+    convergence_detail_path: row.convergence_detail_path
+      ? resolveAssetUrl(row.convergence_detail_path)
+      : undefined,
   }
 }
 
@@ -83,6 +101,8 @@ export async function fetchDesigners(): Promise<Designer[]> {
 
   return (data as SupabaseDesignerRow[]).map(mapDesigner)
 }
+
+export const fetchDesignersCached = cache(fetchDesigners)
 
 export async function fetchDesignerById(id: number): Promise<Designer | null> {
   const supabase = getSupabaseServerClient()

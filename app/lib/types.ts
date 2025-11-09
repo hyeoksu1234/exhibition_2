@@ -17,6 +17,10 @@ export interface Designer {
   interview1: string;
   interview2: string;
   student_number?: string;
+  innovation_thumbnail_path?: string;
+  innovation_detail_path?: string;
+  convergence_thumbnail_path?: string;
+  convergence_detail_path?: string;
 }
 
 // 작품 타입 정의
@@ -30,6 +34,7 @@ export interface Work {
   professor: string;
   tags: string[];
   userId: number; // Designer의 id와 연결
+  designerName: string;
   projectType: string; // 프로젝트 유형 (브랜딩, UI/UX, 편집, 타이포그래피 등)
   tools?: string[]; // 사용 도구 (Photoshop, Illustrator, Figma 등)
   year: number;

@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { works } from '@/app/lib/data/works'
-import { designers } from '@/app/lib/data/designers'
+import type { Work } from '@/app/lib/types'
+import { fetchWorks } from '@/app/lib/services/works'
+import { fetchDesignerById } from '@/app/lib/services/designers'
 import { englishNameByStudentNumber } from '@/app/lib/data/student-data'
 
 function seededRandom(seed: number): () => number {
@@ -38,21 +39,22 @@ interface WorkDetailPageProps {
   }
 }
 
-export default function WorkDetailPage({ params }: WorkDetailPageProps) {
+export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
   const workId = parseInt(params.id)
-  const work = works.find(w => w.id === workId)
-  const designer = work ? designers.find(d => d.id === work.userId) : undefined
+  const allWorks = await fetchWorks()
+  const work = allWorks.find(w => w.id === workId)
+  const designer = work ? await fetchDesignerById(work.userId) : null
   const studioKey = work?.category === '혁신디자인스튜디오' ? 'innovation' : 'convergence'
   const worksListHref = `/archives/years/2025/works${studioKey === 'innovation' ? '?studio=innovation' : ''}`
 
   const daySeed = Math.floor(Date.now() / 86_400_000)
   const categorySeed = work ? daySeed + hashString(work.category) : daySeed
-  const sameStudio = work ? works.filter(w => w.category === work.category) : []
+  const sameStudio = work ? allWorks.filter(w => w.category === work.category) : []
   const shuffledStudio = work ? shuffleWithSeed(sameStudio, categorySeed) : []
   const currentIndex = work ? shuffledStudio.findIndex(w => w.id === work.id) : -1
   const targetCount = Math.min(4, Math.max(0, shuffledStudio.length - 1))
   const offsets = [-1, 1, -2, 2]
-  const related: typeof works = []
+  const related: Work[] = []
   const used = new Set<number>()
 
   if (currentIndex >= 0) {
@@ -90,10 +92,26 @@ export default function WorkDetailPage({ params }: WorkDetailPageProps) {
       <div className="container mx-auto px-6 py-10">
         <div className="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-[minmax(0,720px)_minmax(0,1fr)] gap-10">
           {/* Left: main visual */}
-          <div className="order-2 lg:order-1">
-            <div className="w-full bg-[repeating-linear-gradient(45deg,#efefef_0,#efefef_24px,#f8f8f8_24px,#f8f8f8_48px)] border border-gray-200 min-h-[720px]" />
-            {/* Video placeholder */}
-            <div className="mt-10 w-full h-[220px] bg-gray-200 border border-gray-200" />
+          <div className="order-2 lg:order-1 space-y-8">
+            {work.images.length ? (
+              work.images.map((src, idx) => (
+                <div
+                  key={`${src}-${idx}`}
+                  className="relative w-full min-h-[420px] border border-gray-200 bg-gray-100 overflow-hidden"
+                >
+                  <Image
+                    src={src}
+                    alt={`${work.title} 상세 이미지 ${idx + 1}`}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 720px"
+                    className="object-cover"
+                    priority={idx === 0}
+                  />
+                </div>
+              ))
+            ) : (
+              <div className="w-full bg-[repeating-linear-gradient(45deg,#efefef_0,#efefef_24px,#f8f8f8_24px,#f8f8f8_48px)] border border-gray-200 min-h-[720px]" />
+            )}
           </div>
 
           {/* Right: meta and description */}
@@ -129,11 +147,19 @@ export default function WorkDetailPage({ params }: WorkDetailPageProps) {
                 href={`/archives/years/2025/works/${r.id}`}
                 className={`group block ${idx >= 2 ? 'hidden sm:block' : ''}`}
               >
-                <div className="aspect-[4/3] w-full bg-[repeating-linear-gradient(45deg,#efefef_0,#efefef_24px,#f8f8f8_24px,#f8f8f8_48px)]" />
-                <div className="mt-3 pretendard-font font-bold text-[16px] text-gray-900">{r.title}</div>
-                <div className="pretendard-font font-bold text-[14px] text-[#8b8b8b]">
-                  {designers.find(d => d.id === r.userId)?.name || ''}
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-[repeating-linear-gradient(45deg,#efefef_0,#efefef_24px,#f8f8f8_24px,#f8f8f8_48px)]">
+                  {r.thumbnail ? (
+                    <Image
+                      src={r.thumbnail}
+                      alt={`${r.title} 썸네일`}
+                      fill
+                      sizes="(max-width: 1024px) 50vw, 240px"
+                      className="object-cover"
+                    />
+                  ) : null}
                 </div>
+                <div className="mt-3 pretendard-font font-bold text-[16px] text-gray-900">{r.title}</div>
+                <div className="pretendard-font font-bold text-[14px] text-[#8b8b8b]">{r.designerName}</div>
               </Link>
             ))}
           </div>

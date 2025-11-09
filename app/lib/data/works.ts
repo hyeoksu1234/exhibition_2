@@ -1,4 +1,4 @@
-import { Work } from '../types';
+import { type Designer, type StudioKey, Work } from '../types';
 import { designers } from './designers';
 import {
   convergenceDescriptionsByName,
@@ -262,15 +262,16 @@ const convergenceOverrides: Record<string, { title: string; professor?: string }
 }, {} as Record<string, { title: string; professor?: string }[]>);
 
 // 작품 데이터 생성 함수
-function generateWorks(): Work[] {
+export function generateWorks(inputDesigners: Designer[] = designers): Work[] {
   const works: Work[] = [];
   let workId = 1;
   const innovationSeq: Record<string, number> = {};
   const convergenceSeq: Record<string, number> = {};
 
-  designers.forEach((designer) => {
-    // 디자이너 상세 페이지 요구사항: 스튜디오 2개(융합/혁신)로 고정 생성
-    const categories: Array<'혁신디자인스튜디오' | '융합디자인스튜디오'> = ['융합디자인스튜디오', '혁신디자인스튜디오'];
+  inputDesigners.forEach((designer) => {
+    const categories: StudioKey[] = Array.isArray(designer.studios) && designer.studios.length
+      ? designer.studios
+      : ['융합디자인스튜디오', '혁신디자인스튜디오'];
 
     categories.forEach((category) => {
       const projectType = projectTypes[Math.floor(Math.random() * projectTypes.length)];
@@ -279,7 +280,7 @@ function generateWorks(): Work[] {
 
       // 이미지 개수 (3-6개)
       const numImages = Math.floor(Math.random() * 4) + 3;
-      const images = Array.from({ length: numImages }, (_, idx) => `/images/works/work-${workId}-${idx + 1}.jpg`);
+      const fallbackImages = Array.from({ length: numImages }, (_, idx) => `/images/works/work-${workId}-${idx + 1}.jpg`);
 
       // 기본값들
       let title = `${titlePrefixes[Math.floor(Math.random() * titlePrefixes.length)]} ${titleSuffixes[Math.floor(Math.random() * titleSuffixes.length)]}`;
@@ -339,17 +340,28 @@ function generateWorks(): Work[] {
 
         convergenceSeq[designer.name] = seq + 1;
       }
+      const isInnovation = category === '혁신디자인스튜디오';
+      const providedThumbnail = isInnovation
+        ? designer.innovation_thumbnail_path
+        : designer.convergence_thumbnail_path;
+      const providedDetail = isInnovation
+        ? designer.innovation_detail_path
+        : designer.convergence_detail_path;
+
+      const images = providedDetail ? [providedDetail] : fallbackImages;
+      const thumbnail = providedThumbnail || `/images/works/work-${workId}-thumb.jpg`;
 
       works.push({
         id: workId,
         title,
         description,
         images,
-        thumbnail: `/images/works/work-${workId}-thumb.jpg`,
+        thumbnail,
         category,
         professor,
         tags: tagOptions[tagIndex],
         userId: designer.id,
+        designerName: designer.name,
         projectType,
         tools: toolsOptions[toolsIndex],
         year: 2025,
