@@ -144,23 +144,6 @@ export async function fetchDesigners(): Promise<Designer[]> {
 export const fetchDesignersCached = cache(fetchDesigners)
 
 export async function fetchDesignerById(id: number): Promise<Designer | null> {
-  const supabase = getSupabaseServerClient()
-  if (!supabase) {
-    return fallbackDesigners.find((designer) => designer.id === id) || null
-  }
-
-  const { data, error } = await supabase
-    .from('designers')
-    .select(DESIGNER_SELECT)
-    .eq('id', id)
-    .maybeSingle()
-
-  if (error) {
-    console.warn('[fetchDesignerById] Falling back to local data', error.message)
-    return fallbackDesigners.find((designer) => designer.id === id) || null
-  }
-
-  if (!data) return null
-
-  return mapDesigner(data as SupabaseDesignerRow)
+  const designers = await fetchDesigners()
+  return designers.find((designer) => designer.id === id) || null
 }
