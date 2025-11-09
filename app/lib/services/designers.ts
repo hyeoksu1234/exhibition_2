@@ -69,6 +69,7 @@ function mergeDesignersByStudent(designers: Designer[]): Designer[] {
 }
 
 function mapDesigner(row: SupabaseDesignerRow): Designer {
+  const studentNumber = row.student_number?.trim() || undefined
   const studiosRaw = Array.isArray(row.studios)
     ? (row.studios.filter(Boolean) as StudioKey[])
     : row.studio
@@ -80,7 +81,7 @@ function mapDesigner(row: SupabaseDesignerRow): Designer {
 
   const normalizedEmail =
     (row.email && row.email.trim()) ||
-    (row.student_number ? emailByStudentNumber[row.student_number] : '') ||
+    (studentNumber ? emailByStudentNumber[studentNumber] : '') ||
     ''
 
   const fallbackProfileMeta = getProfileImageMeta(row.student_number || undefined, row.name)
@@ -104,7 +105,7 @@ function mapDesigner(row: SupabaseDesignerRow): Designer {
     website: row.website || undefined,
     interview1: row.interview1 || '',
     interview2: row.interview2 || '',
-    student_number: row.student_number || undefined,
+    student_number: studentNumber,
     innovation_thumbnail_path: row.innovation_thumbnail_path
       ? resolveAssetUrl(row.innovation_thumbnail_path)
       : undefined,
