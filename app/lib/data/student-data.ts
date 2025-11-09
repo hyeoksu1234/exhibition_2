@@ -280,8 +280,8 @@ export const englishNameByStudentNumber: Record<string, string> = {
 // key: 학번, value: 파일명 (public/images/profiles/images 기준)
 export const photoFileByStudentNumber: Record<string, string> = {
   // 이지수 (동명이인)
-  '202120343': '이지수.jpg',
-  '202120344': '이지수_2.jpg',
+  '202120343': '202120343.jpg',
+  '202120344': '202120344.jpg',
   // 최지윤 (동명이인) — 서로 사진 교체
   '202020381': '최지윤.jpg',
   '202120393': '최지윤_2.jpg',
@@ -311,7 +311,7 @@ export function getProfileImageMeta(studentNumber: string | undefined, fallbackN
   }
   return {
     ...DEFAULT_PROFILE_META,
-    src: resolveAssetUrl(`/images/profiles/${encodeURIComponent(normalized)}`),
+    src: resolveAssetUrl(`/images/profiles/images/${encodeURIComponent(normalized)}`),
   }
 }
 
