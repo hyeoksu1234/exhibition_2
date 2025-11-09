@@ -97,15 +97,13 @@ export default async function WorkDetailPage({ params }: WorkDetailPageProps) {
               work.images.map((src, idx) => (
                 <div
                   key={`${src}-${idx}`}
-                  className="relative w-full min-h-[420px] border border-gray-200 bg-gray-100 overflow-hidden"
+                  className="w-full border border-gray-200 bg-gray-100"
                 >
-                  <Image
+                  <img
                     src={src}
                     alt={`${work.title} 상세 이미지 ${idx + 1}`}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 720px"
-                    className="object-cover"
-                    priority={idx === 0}
+                    loading={idx === 0 ? 'eager' : 'lazy'}
+                    className="block w-full h-auto"
                   />
                 </div>
               ))

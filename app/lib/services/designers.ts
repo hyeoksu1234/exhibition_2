@@ -37,6 +37,33 @@ const emailByStudentNumber = realStudentData.reduce<Record<string, string>>((acc
 const DESIGNER_SELECT =
   'id,name,major,studio,profile_image,profile_blur_data_url,profile_width,profile_height,bio,email,instagram,website,interview1,interview2,student_number,innovation_thumbnail_path,innovation_detail_path,convergence_thumbnail_path,convergence_detail_path'
 
+function mergeDesignersByStudent(designers: Designer[]): Designer[] {
+  const merged = new Map<string, Designer>()
+
+  designers.forEach((designer) => {
+    const key = designer.student_number || `id-${designer.id}`
+    const existing = merged.get(key)
+
+    if (!existing) {
+      merged.set(key, { ...designer })
+      return
+    }
+
+    const studioSet = new Set<StudioKey>([...existing.studios, ...designer.studios])
+
+    merged.set(key, {
+      ...existing,
+      studios: Array.from(studioSet),
+      innovation_thumbnail_path: existing.innovation_thumbnail_path || designer.innovation_thumbnail_path,
+      innovation_detail_path: existing.innovation_detail_path || designer.innovation_detail_path,
+      convergence_thumbnail_path: existing.convergence_thumbnail_path || designer.convergence_thumbnail_path,
+      convergence_detail_path: existing.convergence_detail_path || designer.convergence_detail_path,
+    })
+  })
+
+  return Array.from(merged.values())
+}
+
 function mapDesigner(row: SupabaseDesignerRow): Designer {
   const studiosRaw = Array.isArray(row.studios)
     ? (row.studios.filter(Boolean) as StudioKey[])
@@ -86,7 +113,7 @@ function mapDesigner(row: SupabaseDesignerRow): Designer {
 export async function fetchDesigners(): Promise<Designer[]> {
   const supabase = getSupabaseServerClient()
   if (!supabase) {
-    return fallbackDesigners
+    return mergeDesignersByStudent(fallbackDesigners)
   }
 
   const { data, error } = await supabase
@@ -96,10 +123,11 @@ export async function fetchDesigners(): Promise<Designer[]> {
 
   if (error || !data) {
     console.warn('[fetchDesigners] Falling back to local data', error?.message)
-    return fallbackDesigners
+    return mergeDesignersByStudent(fallbackDesigners)
   }
 
-  return (data as SupabaseDesignerRow[]).map(mapDesigner)
+  const mapped = (data as SupabaseDesignerRow[]).map(mapDesigner)
+  return mergeDesignersByStudent(mapped)
 }
 
 export const fetchDesignersCached = cache(fetchDesigners)
