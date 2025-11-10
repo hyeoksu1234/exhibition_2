@@ -31,17 +31,16 @@
     font-family: "rixdongnimgothic-pro", sans-serif;
   }
 
-  html.wf-loading body {
+  html.fonts-loading body {
     opacity: 0;
   }
 
-  html.wf-active body,
-  html.wf-inactive body {
+  html.fonts-ready body {
     opacity: 1;
     transition: opacity 0.25s ease;
   }
 
-  html.wf-loading body::after {
+  html.fonts-loading body::after {
     content: '';
     position: fixed;
     inset: 0;

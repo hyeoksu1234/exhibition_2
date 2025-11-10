@@ -22,6 +22,21 @@ export default function RootLayout({
     <html lang="ko">
       <head>
         <link rel="icon" href="/favicon.png" type="image/png" sizes="any" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (() => {
+                const root = document.documentElement;
+                root.classList.add('fonts-loading');
+                const ready = document.fonts?.ready || Promise.resolve();
+                ready.finally(() => {
+                  root.classList.remove('fonts-loading');
+                  root.classList.add('fonts-ready');
+                });
+              })();
+            `,
+          }}
+        />
         <link rel="dns-prefetch" href="https://use.typekit.net" />
         <link rel="dns-prefetch" href="https://p.typekit.net" />
         <link rel="preconnect" href="https://use.typekit.net" crossOrigin="anonymous" />
