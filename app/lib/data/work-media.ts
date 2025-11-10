@@ -302,6 +302,10 @@ export const workMediaByStudentNumber: WorkMediaMap = {
       prototypes: ['https://vivacious-tests-778684.framer.app/in'],
       usesAI: true,
     },
+    convergence: {
+      videos: ['https://youtube.com/shorts/joW0AORlyX4?feature=share'],
+      usesAI: true,
+    },
   },
   // 김수인
   '202120230': {
