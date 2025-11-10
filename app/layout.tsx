@@ -4,12 +4,42 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
+const SITE_TITLE = '2025 졸업 전시 온라인 플랫폼'
+const SITE_DESCRIPTION = '2025 졸업 전시 작품을 온라인에서 만나보세요.'
+const siteUrlFromEnv =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : undefined)
+const normalizedSiteUrl = siteUrlFromEnv?.replace(/\/$/, '')
+const metadataBase = normalizedSiteUrl ? new URL(normalizedSiteUrl) : undefined
+const ogImageUrl = normalizedSiteUrl ? `${normalizedSiteUrl}/img.png` : '/img.png'
 
 export const metadata: Metadata = {
-  title: '2025 졸업 전시 온라인 플랫폼',
-  description: '2025 졸업 전시 작품을 온라인에서 만나보세요.',
+  metadataBase,
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
   icons: {
     icon: '/favicon.png',
+  },
+  openGraph: {
+    type: 'website',
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: normalizedSiteUrl,
+    siteName: SITE_TITLE,
+    images: [
+      {
+        url: ogImageUrl,
+        width: 1200,
+        height: 630,
+        alt: SITE_TITLE,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [ogImageUrl],
   },
 }
 
