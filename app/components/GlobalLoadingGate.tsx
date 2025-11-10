@@ -2,37 +2,46 @@
 
 import { useEffect, useState } from 'react'
 
-function waitForWindowLoad(): Promise<void> {
-  return new Promise((resolve) => {
-    if (typeof window === 'undefined') {
-      resolve()
-      return
-    }
-    if (document.readyState === 'complete') {
-      resolve()
-      return
-    }
-    const handleLoad = () => resolve()
-    window.addEventListener('load', handleLoad, { once: true })
-  })
-}
-
 export default function GlobalLoadingGate() {
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
     let cancelled = false
-    const fontPromise = document.fonts?.ready ?? Promise.resolve()
-    Promise.all([fontPromise, waitForWindowLoad()])
-      .catch(() => undefined)
-      .finally(() => {
-        if (!cancelled) {
-          setReady(true)
-        }
-      })
+
+    function markReady() {
+      if (!cancelled) {
+        setReady(true)
+      }
+    }
+
+    const html = document.documentElement
+
+    const isTypekitReady = () =>
+      html.classList.contains('wf-active') || html.classList.contains('wf-inactive')
+
+    if (isTypekitReady()) {
+      markReady()
+      return
+    }
+
+    const observer = new MutationObserver(() => {
+      if (isTypekitReady()) {
+        observer.disconnect()
+        markReady()
+      }
+    })
+
+    observer.observe(html, { attributes: true, attributeFilter: ['class'] })
+
+    const timeout = window.setTimeout(() => {
+      observer.disconnect()
+      markReady()
+    }, 8000)
 
     return () => {
       cancelled = true
+      observer.disconnect()
+      window.clearTimeout(timeout)
     }
   }, [])
 
