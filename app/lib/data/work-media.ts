@@ -707,7 +707,7 @@ export const workMediaByStudentNumber: WorkMediaMap = {
   // 김가은
   '202220206': {
     innovation: {
-      videos: ['https://vimeo.com/1134464930/06598cd25b?activityReferer=1'],
+      videos: ['https://vimeo.com/1134464930?share=copy&fl=sv&fe=ci'],
       usesAI: true,
     },
     convergence: {
