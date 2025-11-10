@@ -433,7 +433,7 @@ export const workMediaByStudentNumber: WorkMediaMap = {
   // 안민
   '202120312': {
     innovation: {
-      videos: ['https://youtu.be/5rZtrYAejmo'],
+      videos: ['https://youtu.be/5rZtrYAejmo?si=er0-LPTl2VoH5WLQ'],
       usesAI: true,
     },
     convergence: {
