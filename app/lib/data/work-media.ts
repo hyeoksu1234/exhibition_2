@@ -192,10 +192,12 @@ export const workMediaByStudentNumber: WorkMediaMap = {
   // 이혁수
   '202021410': {
     innovation: {
+      prototypes: ['https://hyeoksu1234.github.io/auto-zen-garden-landing/'],
       usesAI: true,
     },
     convergence: {
       videos: ['https://youtu.be/rPond3JJNtE'],
+      prototypes: ['https://hyeoksu1234.github.io/mopez/'],
       usesAI: true,
     },
   },
