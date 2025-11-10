@@ -26,34 +26,7 @@ function romanizeKorean(str: string): string {
 // Bio helper: insert gentle line breaks after sentence‑like boundaries
 function formatBio(text: string): string {
   if (!text) return ''
-  // 1) Normalize whitespace
-  const normalized = text.replace(/\r\n?/g, '\n').replace(/[\t ]+/g, ' ').trim()
-
-  // 2) If author inserted explicit newlines, preserve them (but collapse 3+)
-  if (normalized.includes('\n')) {
-    return normalized.replace(/\n{3,}/g, '\n\n')
-  }
-
-  // 3) Conservative sentence split: split after sentence-ending punctuation
-  //    only when next token likely starts a new sentence (letter/Korean/quote/open bracket)
-  const parts = normalized.split(/(?<=[.!?]|다\.|니다\.|요\.)\s+(?=[A-Za-z가-힣"“‘\(\[])/g)
-
-  // 4) Reflow into lines with a soft max width to avoid overly long lines
-  const MAX = 72
-  const lines: string[] = []
-  let buf = ''
-  for (const seg of parts) {
-    const candidate = buf ? buf + ' ' + seg : seg
-    if (candidate.length > MAX && buf) {
-      lines.push(buf)
-      buf = seg
-    } else {
-      buf = candidate
-    }
-  }
-  if (buf) lines.push(buf)
-
-  return lines.join('\n')
+  return text.replace(/\r\n?/g, '\n').replace(/\s*\n+\s*/g, ' ').replace(/\s{2,}/g, ' ').trim()
 }
 
 // 페이지 매개변수 타입
@@ -222,7 +195,7 @@ export default async function DesignerDetailPage({ params }: DesignerDetailPageP
                   )}
                 </div>
               </div>
-              <p className="pretendard-font text-gray-700 leading-relaxed break-keep whitespace-pre-line max-w-[68ch] min-[900px]:max-w-[72ch]" style={{ wordBreak: 'keep-all' }}>
+              <p className="pretendard-font text-gray-700 leading-relaxed break-keep max-w-[68ch] min-[900px]:max-w-[72ch]" style={{ wordBreak: 'keep-all', whiteSpace: 'normal' }}>
                 {formatBio(designer.bio)}
               </p>
             </div>
@@ -244,14 +217,18 @@ export default async function DesignerDetailPage({ params }: DesignerDetailPageP
               <span className="inline-flex items-center px-2 py-0.5 -rotate-1" style={{ background: '#DDFF8E' }}>[ 1 ]</span>
             </div>
             <h3 className="text-lg min-[900px]:text-xl font-normal mb-3">4년동안 디자인 전공을 하며 생긴 새로운 습관이나 태도가 있다면 무엇인가요?</h3>
-            <p className="pretendard-font text-gray-700 leading-relaxed break-keep whitespace-pre-line max-w-[68ch] min-[900px]:max-w-[72ch]" style={{ wordBreak: 'keep-all' }}>{formatBio(designer.interview1)}</p>
+            <p className="pretendard-font text-gray-700 leading-relaxed break-keep max-w-[68ch] min-[900px]:max-w-[72ch]" style={{ wordBreak: 'keep-all', whiteSpace: 'normal' }}>
+              {formatBio(designer.interview1)}
+            </p>
           </div>
           <div>
             <div className="mb-3">
               <span className="inline-flex items-center px-2 py-0.5 -rotate-1" style={{ background: '#DDFF8E' }}>[ 2 ]</span>
             </div>
             <h3 className="text-lg min-[900px]:text-xl font-normal mb-3">졸업 작품 작업을 하면서 가장 고민했던 점이나 기억에 남는 순간이 있다면 무엇인가요?</h3>
-            <p className="pretendard-font text-gray-700 leading-relaxed break-keep whitespace-pre-line max-w-[68ch] min-[900px]:max-w-[72ch]" style={{ wordBreak: 'keep-all' }}>{formatBio(designer.interview2)}</p>
+            <p className="pretendard-font text-gray-700 leading-relaxed break-keep max-w-[68ch] min-[900px]:max-w-[72ch]" style={{ wordBreak: 'keep-all', whiteSpace: 'normal' }}>
+              {formatBio(designer.interview2)}
+            </p>
           </div>
         </div>
       </section>
