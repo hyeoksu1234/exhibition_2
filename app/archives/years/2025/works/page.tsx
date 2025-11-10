@@ -1,7 +1,14 @@
 import WorksPageClient from './WorksPageClient'
 import { fetchWorks } from '@/app/lib/services/works'
 
-export default async function WorksPage() {
+interface WorksPageProps {
+  searchParams: {
+    studio?: string
+  }
+}
+
+export default async function WorksPage({ searchParams }: WorksPageProps) {
   const works = await fetchWorks()
-  return <WorksPageClient works={works} />
+  const studioParam = searchParams.studio === 'innovation' ? 'innovation' : 'convergence'
+  return <WorksPageClient works={works} initialStudio={studioParam} />
 }

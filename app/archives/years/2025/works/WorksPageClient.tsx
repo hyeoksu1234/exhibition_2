@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useMemo, useState, type CSSProperties } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Footer from "../components/Footer";
 import type { Work } from "@/app/lib/types";
 
@@ -77,35 +77,36 @@ const STUDIOS: Record<StudioKey, { label: string; en: string; icon: string; desc
 
 interface WorksPageClientProps {
   works: Work[];
+  initialStudio: StudioKey;
 }
 
-export default function WorksPageClient({ works }: WorksPageClientProps) {
-  const searchParams = useSearchParams();
-  const studioParam = searchParams.get("studio");
-  const [active, setActive] = useState<StudioKey>(studioParam === "innovation" ? "innovation" : "convergence");
+export default function WorksPageClient({ works, initialStudio }: WorksPageClientProps) {
+  const [active, setActive] = useState<StudioKey>(initialStudio);
   const [profFilter, setProfFilter] = useState<string>("전체");
   const daySeed = Math.floor(Date.now() / 86_400_000);
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    const next = studioParam === "innovation" ? "innovation" : "convergence";
-    setActive((prev) => {
-      if (prev !== next) {
-        setProfFilter("전체");
-        return next;
-      }
-      return prev;
-    });
-  }, [studioParam]);
-
-  useEffect(() => {
     const desiredQuery = active === "innovation" ? "?studio=innovation" : "";
-    const currentQuery = studioParam === "innovation" ? "?studio=innovation" : "";
-    if (desiredQuery !== currentQuery) {
+    const current = typeof window !== "undefined" ? window.location.search : "";
+    if (desiredQuery !== current) {
       router.replace(`${pathname}${desiredQuery}`, { scroll: false });
     }
-  }, [active, studioParam, router, pathname]);
+  }, [active, router, pathname]);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      const studioParam = params.get("studio") === "innovation" ? "innovation" : "convergence";
+      setActive(studioParam);
+      setProfFilter("전체");
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
 
   // userId -> 디자이너 이름 매핑
   // 실데이터 기반 필터링
@@ -208,3 +209,6 @@ export default function WorksPageClient({ works }: WorksPageClientProps) {
     </div>
   );
 }
+  useEffect(() => {
+    setActive(initialStudio);
+  }, [initialStudio]);

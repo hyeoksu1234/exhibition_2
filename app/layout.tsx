@@ -26,8 +26,6 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://p.typekit.net" />
         <link rel="preconnect" href="https://use.typekit.net" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://p.typekit.net" crossOrigin="anonymous" />
-        <link rel="preload" href="https://use.typekit.net/yvm1rwe.css" as="style" />
-        <link rel="stylesheet" href="https://use.typekit.net/yvm1rwe.css" />
         <link rel="preload" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" as="style" />
         <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
