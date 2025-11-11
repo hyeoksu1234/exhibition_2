@@ -564,7 +564,7 @@ export const workMediaByStudentNumber: WorkMediaMap = {
   // 전초윤
   '202120364': {
     innovation: {
-      prototypes: ['https://legendissuelab.framer.website/'],
+      prototypes: ['https://legendissuelab.framer.website/', 'https://www.figma.com/proto/jb85ACVI2Cz8tPDbz2fdjP/Lincon?page-id=13%3A938&node-id=13-941&viewport=330%2C168%2C0.35&t=7Ncb3nXBd7CUk81q-1&scaling=scale-down-width&content-scaling=fixed'],
       usesAI: true,
     },
     convergence: {
