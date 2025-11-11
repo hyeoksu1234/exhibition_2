@@ -219,7 +219,7 @@ const convergenceOverridesList: OverrideDefinition[] = [
   { name: '고세진', title: 'Nachat', professor: '신윤진 교수님' },
   { name: '고유빈', title: '나의 동네', professor: '유동관 교수님' },
   { name: '고유정', title: 'Hotel Staydium', professor: '신윤진 교수님' },
-  { name: '금예은', title: '오늘의 집 브랜드 경험 프로젝트', professor: '이원제 교수님' },
+  { name: '금예은', title: '오늘의집 X Raemian', professor: '이원제 교수님' },
   { name: '김가은', title: '인어의 팔레트', professor: '유동관 교수님' },
   { name: '김가현', title: '지구에 온 린트', professor: '유동관 교수님' },
   { name: '김다예', title: '깨달음의 길, <SATYA>', professor: '신윤진 교수님' },
