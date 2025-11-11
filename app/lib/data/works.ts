@@ -290,7 +290,7 @@ const convergenceOverridesList: OverrideDefinition[] = [
   { name: '전초윤', title: 'Lincon : K-pop 콘서트 관람을 위한 단 하나의 플랫폼', professor: '신윤진 교수님' },
   { name: '정다인', title: 'SCENTRY | 향과 감각으로 떠나는 자연 여행', professor: '이원제 교수님' },
   { name: '정유선', title: '세상에서 가장작은 코끼리', professor: '유동관 교수님' },
-  { name: '정재원', title: 'BUNBYRUN : 번바이런', professor: '남정 교수님' },
+  { name: '정재원', title: 'BURNBYRUN : 번바이런', professor: '남정 교수님' },
   { name: '정지수', title: 'OMNISIA : Synesthesia Becomes Presence', professor: '남정 교수님' },
   { name: '정지온', title: 'Ortolan', professor: '유동관 교수님' },
   { name: '조은영', title: '씨네틈', professor: '남정 교수님' },
