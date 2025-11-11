@@ -358,6 +358,7 @@ export const workMediaByStudentNumber: WorkMediaMap = {
   // 김혜림
   '202120248': {
     innovation: {
+      videos: ['https://vimeo.com/1135648201?share=copy&fl=sv&fe=ci'],
       usesAI: true,
     },
   },
