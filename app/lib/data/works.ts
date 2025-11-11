@@ -160,7 +160,7 @@ const innovationOverridesList: OverrideDefinition[] = [
   { name: '송희원', title: '보이지 않는 규칙: 어른들을 위한 예절 가이드', professor: '손우성 교수님' },
   { name: '신은혜', title: '독방체험: 디지털 세대를 위한 문해력 향상 보드게임', professor: '서승연 교수님' },
   { name: '안민', title: '감정의 공간으로', professor: '안혜선 교수님' },
-  { name: '엄채은', title: 'CLOZYTECH : 나쁜습관의 미래', professor: '서승연 교수님' },
+  { name: '엄채은', title: '디지털악습의 미래 : CLOZYTECH', professor: '서승연 교수님' },
   { name: '유경주', title: 'Record of Silence', professor: '안혜선 교수님' },
   { name: '유서윤', title: 'TURN STRESS 5FF', professor: '김한솔 교수님' },
   { name: '유현정', title: '단어의 시간 여행', professor: '김한솔 교수님' },
