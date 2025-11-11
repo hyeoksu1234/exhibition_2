@@ -564,11 +564,11 @@ export const workMediaByStudentNumber: WorkMediaMap = {
   // 전초윤
   '202120364': {
     innovation: {
-      prototypes: ['https://legendissuelab.framer.website/', 'https://www.figma.com/proto/jb85ACVI2Cz8tPDbz2fdjP/Lincon?page-id=13%3A938&node-id=13-941&viewport=330%2C168%2C0.35&t=7Ncb3nXBd7CUk81q-1&scaling=scale-down-width&content-scaling=fixed'],
+      prototypes: ['https://legendissuelab.framer.website/'],
       usesAI: true,
     },
     convergence: {
-      prototypes: ['https://www.figma.com/proto/jb85ACVI2Cz8tPDbz2fdjP/Lincon?node-id=0-1&p=f&viewport=81%2C99%2C0.21&t=UIvhd7DidXWIBNRZ-0&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=1%3A291'],
+      prototypes: ['https://www.figma.com/proto/jb85ACVI2Cz8tPDbz2fdjP/Lincon?node-id=0-1&p=f&viewport=81%2C99%2C0.21&t=UIvhd7DidXWIBNRZ-0&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=1%3A291','https://www.figma.com/proto/jb85ACVI2Cz8tPDbz2fdjP/Lincon?page-id=13%3A938&node-id=13-941&viewport=330%2C168%2C0.35&t=7Ncb3nXBd7CUk81q-1&scaling=scale-down-width&content-scaling=fixed'],
       usesAI: true,
     },
   },
