@@ -296,7 +296,7 @@ const convergenceOverridesList: OverrideDefinition[] = [
   { name: '조은영', title: '씨네틈', professor: '남정 교수님' },
   { name: '조은희', title: '보이지 않는 두려움', professor: '유동관 교수님' },
   { name: '지예린', title: 'Loopin', professor: '남정 교수님' },
-  { name: '천다영', title: '시니어를 위한 덕질 리스트', professor: '남정 교수님' },
+  { name: '천다영', title: '시니어를 위한 덕질리스트', professor: '남정 교수님' },
   { name: '202020381', title: 'SLOWTONE(슬로우톤)', professor: '남정 교수님' },
   { name: '202120393', title: 'UGLY DOG CLUB', professor: '남정 교수님' },
   { name: '한유진', title: '삶은 고양이처럼', professor: '유동관 교수님' },
