@@ -78,10 +78,6 @@
     width: 85%;
   }
 
-  .portrait-kiosk-hero .home-hero-image {
-    opacity: 0;
-    visibility: hidden;
-  }
 
   .footer-desktop,
   .footer-tablet,
@@ -105,10 +101,6 @@
       left: auto;
       transform: none;
       width: 100%;
-    }
-    .portrait-kiosk-hero .home-hero-image {
-      opacity: 0;
-      visibility: hidden;
     }
     .home-hero-image {
       margin-top: 0 !important;
