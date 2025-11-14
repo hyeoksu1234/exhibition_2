@@ -5,7 +5,8 @@ import { useEffect, useRef, useState } from 'react'
 const PORTRAIT_RATIO_THRESHOLD = 1.35
 const MIN_SHORT_SIDE = 520
 const MIN_LONG_SIDE = 900
-const LG_PATTERN = /(standby|webos|lgtv|lge|sm[ -]?27|up970)/i
+const LG_SHORT_SIDE = 360
+const LG_PATTERN = /(standby|standbyme|webos|lgtv|lge|lgbrowser|netcast|sm[ -]?27|up970)/i
 
 const isPortraitKiosk = () => {
   if (typeof window === 'undefined') return false
@@ -16,7 +17,10 @@ const isPortraitKiosk = () => {
   const longSide = Math.max(width, height)
   const ua = (typeof navigator !== 'undefined' ? navigator.userAgent : '') ?? ''
   const isLgStandbyMe = LG_PATTERN.test(ua)
-  return ratio > PORTRAIT_RATIO_THRESHOLD && shortSide >= MIN_SHORT_SIDE && (isLgStandbyMe || longSide >= MIN_LONG_SIDE)
+  const isPortraitOrientation = ratio > PORTRAIT_RATIO_THRESHOLD || (isLgStandbyMe && height >= width)
+  const meetsShortSide = shortSide >= (isLgStandbyMe ? LG_SHORT_SIDE : MIN_SHORT_SIDE)
+  const meetsLongSide = isLgStandbyMe || longSide >= MIN_LONG_SIDE
+  return isPortraitOrientation && meetsShortSide && meetsLongSide
 }
 
 export default function HeroSection() {
